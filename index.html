@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dubizzle Cars Payment SOP Guide v2.0</title>
+    <title>Dubizzle Cars Payment SOP Guide v3.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -28,7 +28,33 @@
         }
 
         /* Interaction States */
-        .step-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .step-card { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer;
+        }
+        .step-card:active { transform: scale(0.98); }
+        
+        /* Completed State */
+        .step-completed {
+            background: #f0fdf4 !important; /* green-50 */
+            border-left-color: #22c55e !important; /* green-500 */
+            opacity: 0.7;
+        }
+        .step-completed .step-icon-bg {
+            background-color: #22c55e !important;
+            color: white !important;
+            border-color: #22c55e !important;
+        }
+        .step-completed::after {
+            content: '✓';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-weight: bold;
+            color: #22c55e;
+            font-size: 1.2rem;
+        }
+
         .step-dimmed { opacity: 0.15; filter: grayscale(100%); pointer-events: none; }
         
         /* Progress Line Logic */
@@ -49,21 +75,12 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid #f8fafc; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Print Optimization */
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; color: black; padding: 0; }
-            .step-card { break-inside: avoid; border: 1px solid #ddd; box-shadow: none; margin-bottom: 1rem; }
-            #app-container { max-width: 100% !important; padding: 0; }
-            .progress-line::before { display: none; } /* Hide timeline lines in print for cleaner look */
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-red-100 selection:text-red-900">
 
     <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-200 no-print transition-all duration-300">
+    <nav class="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center cursor-pointer group" onclick="app.goHome()" role="button" tabindex="0" aria-label="Go to Home">
                 <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center mr-3 text-white font-bold text-lg shadow-lg shadow-red-200 group-hover:scale-105 transition-transform">D</div>
@@ -72,8 +89,8 @@
                         Payment <span class="text-red-600">SOP</span>
                     </h1>
                     <div class="flex items-center mt-0.5">
-                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-2">Interactive Guide</span>
-                        <span class="bg-slate-100 text-slate-600 text-[9px] px-1.5 py-0.5 rounded font-bold">v2.0</span>
+                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-2">Digital Learning Guide</span>
+                        <span class="bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.5 rounded font-bold border border-emerald-200">Interactive</span>
                     </div>
                 </div>
             </div>
@@ -90,8 +107,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-slate-400 text-xs py-10 mt-auto border-t border-slate-200 bg-white no-print">
-        <p class="font-medium">© Dubizzle Cars • Internal Training Document</p>
+    <footer class="text-center text-slate-400 text-xs py-10 mt-auto border-t border-slate-200 bg-white">
+        <p class="font-medium">© Dubizzle Cars • Internal Learning Resource</p>
     </footer>
 
     <!-- Glossary Modal -->
@@ -121,20 +138,30 @@
         <div class="animate-fadeIn">
             <div class="text-center mb-12 pt-4">
                 <h2 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Payment Operations Workflow</h2>
-                <p class="text-lg text-slate-500 max-w-2xl mx-auto">Select a transaction type below to view the detailed Standard Operating Procedure, timelines, and document requirements.</p>
+                <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-8">Select a transaction type to start the interactive guide.</p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-lg mx-auto relative group mb-8">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    </div>
+                    <input type="text" id="scenario-search" onkeyup="app.searchScenarios(this.value)" 
+                        class="block w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm" 
+                        placeholder="Search for 'Fleet', 'POA', 'Company'...">
+                </div>
             </div>
             
             <!-- Quick Stats -->
-            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-10 stagger-1 animate-fadeIn">
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-12 stagger-1 animate-fadeIn">
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center hover:border-blue-100 transition-colors">
                     <div class="text-2xl font-bold text-slate-800">8</div>
                     <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Scenarios</div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center hover:border-blue-100 transition-colors">
                     <div class="text-2xl font-bold text-blue-600">6</div>
                     <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Key Roles</div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center hover:border-blue-100 transition-colors">
                     <div class="text-2xl font-bold text-emerald-600">12+</div>
                     <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Documents</div>
                 </div>
@@ -146,7 +173,7 @@
                 </div>
                 <div class="text-sm text-amber-900 leading-relaxed">
                     <p class="font-bold mb-2 text-lg text-orange-800">⚠️ Critical SLA Policy</p>
-                    <p>If a payment is marked as <span class="bg-white/50 px-1 py-0.5 rounded font-mono font-bold border border-orange-200">Verified</span> but the seller hasn't received it after <span class="font-bold underline decoration-orange-300 decoration-2 underline-offset-2">24 hours</span>, contact Finance immediately. Payments must be resubmitted after issues are resolved.</p>
+                    <p>If a payment is marked as <span class="bg-white/50 px-1 py-0.5 rounded font-mono font-bold border border-orange-200">Verified</span> but the seller hasn't received it after <span class="font-bold underline decoration-orange-300 decoration-2 underline-offset-2">24 hours</span>, contact Finance immediately.</p>
                 </div>
             </div>
 
@@ -160,7 +187,7 @@
     <template id="category-template">
         <div class="animate-fadeIn">
             <!-- Breadcrumbs -->
-            <div class="flex items-center text-sm text-slate-400 mb-6 no-print">
+            <div class="flex items-center text-sm text-slate-400 mb-6">
                 <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="app.goHome()">Home</span>
                 <i data-lucide="chevron-right" class="w-4 h-4 mx-2"></i>
                 <span class="font-semibold text-slate-800" id="crumb-category"></span>
@@ -176,9 +203,6 @@
                         <p class="text-sm text-slate-500 font-medium mt-1">Select a specific transaction scenario</p>
                     </div>
                 </div>
-                <div class="flex gap-2">
-                    <!-- Placeholder for potential category-level actions -->
-                </div>
             </div>
 
             <div class="grid grid-cols-1 gap-5 max-w-5xl mx-auto" id="scenario-list">
@@ -189,41 +213,41 @@
 
     <!-- Scenario Template -->
     <template id="scenario-template">
-        <div class="animate-fadeIn pb-10">
-            <!-- Breadcrumbs -->
-            <div class="flex items-center text-sm text-slate-400 mb-6 no-print">
-                <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="app.goHome()">Home</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 mx-2"></i>
-                <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="app.goBackToCategory()" id="crumb-cat-link"></span>
-                <i data-lucide="chevron-right" class="w-4 h-4 mx-2"></i>
-                <span class="font-semibold text-slate-800 truncate max-w-xs" id="crumb-scenario"></span>
-            </div>
-
-            <!-- Header Nav (Sticky) -->
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-4 sticky top-20 z-40 py-4 bg-slate-50/95 backdrop-blur-md border-b border-slate-200/50 -mx-4 px-4 sm:mx-0 sm:px-0 no-print transition-all">
-                <div class="flex items-center gap-3">
-                    <button onclick="app.goBackToCategory()" class="bg-white text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center font-semibold text-sm group">
-                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i>
-                        Back
-                    </button>
+        <div class="animate-fadeIn pb-20">
+            <!-- Sticky Header with Progress -->
+            <div class="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 -mx-4 px-4 sm:-mx-8 sm:px-8 py-4 mb-8 shadow-sm transition-all">
+                <div class="max-w-6xl mx-auto flex flex-col gap-4">
                     
-                    <button onclick="window.print()" class="bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-400 px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center font-semibold text-sm group" title="Print this guide">
-                        <i data-lucide="printer" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
-                        Print
-                    </button>
-                </div>
-                
-                <!-- Role Filter -->
-                <div class="flex items-center bg-white border-2 border-slate-200 rounded-xl px-4 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 transition-all">
-                    <i data-lucide="filter" class="w-5 h-5 text-blue-600 mr-3"></i>
-                    <div class="flex flex-col mr-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Highlight Role</span>
-                        <select id="role-filter" onchange="app.filterByRole(this.value)" class="bg-transparent text-sm font-bold text-slate-800 focus:outline-none cursor-pointer w-48 -ml-1 py-0.5">
-                            <option value="all">✓ Show Full Process</option>
-                            <!-- Options injected dynamically -->
-                        </select>
+                    <!-- Top Row: Nav & Filters -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4 overflow-hidden">
+                            <button onclick="app.goBackToCategory()" class="bg-white text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 px-3 py-2 rounded-lg shadow-sm transition-all flex-shrink-0 group" title="Back">
+                                <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                            </button>
+                            <div class="flex flex-col overflow-hidden">
+                                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider" id="header-cat-title"></h2>
+                                <h1 class="text-lg font-bold text-slate-800 truncate" id="header-scenario-title"></h1>
+                            </div>
+                        </div>
+
+                        <!-- Role Filter -->
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+                            <i data-lucide="filter" class="w-4 h-4 text-slate-400 mr-2"></i>
+                            <select id="role-filter" onchange="app.filterByRole(this.value)" class="bg-transparent text-sm font-semibold text-slate-700 focus:outline-none cursor-pointer w-40 py-1">
+                                <option value="all">All Roles</option>
+                                <!-- Options injected dynamically -->
+                            </select>
+                        </div>
                     </div>
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none"></i>
+
+                    <!-- Bottom Row: Progress Bar -->
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex items-center">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500 ease-out w-0"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-[-10px]">
+                        <span>Progress</span>
+                        <span id="progress-text">0% Completed</span>
+                    </div>
                 </div>
             </div>
 
@@ -231,12 +255,6 @@
                 
                 <!-- Left Column: Steps -->
                 <div class="lg:col-span-8 order-2 lg:order-1">
-                     <!-- Title for Print -->
-                     <div class="hidden print:block mb-8">
-                        <h1 class="text-3xl font-bold mb-2" id="print-title"></h1>
-                        <p class="text-sm text-gray-500" id="print-meta"></p>
-                     </div>
-
                      <!-- Steps Container -->
                     <div class="space-y-0" id="steps-container">
                         <!-- Steps injected here -->
@@ -244,42 +262,39 @@
                 </div>
 
                 <!-- Right Column: Context (Sticky) -->
-                <div class="lg:col-span-4 order-1 lg:order-2 lg:sticky lg:top-36 space-y-6 no-print">
+                <div class="lg:col-span-4 order-1 lg:order-2 lg:sticky lg:top-48 space-y-6">
                     
-                    <!-- Title Card -->
-                    <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden transform transition-all hover:shadow-2xl">
-                        <div class="h-3 bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 w-full"></div>
-                        <div class="p-6">
-                            <h2 class="text-2xl font-bold text-slate-900 leading-tight mb-2" id="scenario-title"></h2>
-                            <div class="flex items-center gap-2 text-sm text-slate-500 mb-6">
-                                <span class="bg-slate-100 px-2 py-1 rounded-md font-bold text-xs uppercase tracking-wider" id="step-count-badge"></span>
+                    <!-- Tip Card -->
+                    <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-blue-100 p-2 rounded-full text-blue-600 flex-shrink-0">
+                                <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
                             </div>
-                            
-                            <div class="mt-4 pt-5 border-t-2 border-slate-50">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
-                                    <i data-lucide="users" class="w-3 h-3 mr-2"></i> Key Stakeholders
-                                </h3>
-                                <div class="flex flex-wrap gap-2" id="scenario-stakeholders"></div>
+                            <div>
+                                <h4 class="font-bold text-blue-900 text-sm">Interactive Checklist</h4>
+                                <p class="text-xs text-blue-700 mt-1 leading-relaxed">
+                                    Click on any step card to mark it as <strong>Complete</strong>. Use this to track your real-time progress during a transaction.
+                                </p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Docs Summary -->
-                    <div class="bg-indigo-50/60 backdrop-blur-sm rounded-2xl border-2 border-indigo-100/50 p-6 shadow-sm">
-                        <h3 class="text-sm font-bold text-indigo-900 uppercase tracking-wide mb-4 flex items-center">
-                            <i data-lucide="folder-open" class="w-4 h-4 mr-2 text-indigo-600"></i> Required Documents
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i data-lucide="folder-open" class="w-3 h-3 mr-2"></i> Required Documents
                         </h3>
-                        <div class="space-y-2.5" id="docs-summary">
+                        <div class="space-y-2" id="docs-summary">
                             <!-- Doc list injected here -->
                         </div>
                     </div>
 
-                    <!-- Help Tip -->
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 flex gap-3 shadow-sm">
-                        <i data-lucide="help-circle" class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0"></i>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            <span class="font-bold text-slate-700">Pro Tip:</span> Use the "Highlight Role" filter above to dim irrelevant steps and focus only on your responsibilities.
-                        </p>
+                    <!-- Stakeholders -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i data-lucide="users" class="w-3 h-3 mr-2"></i> Stakeholders Involved
+                        </h3>
+                        <div class="flex flex-wrap gap-2" id="scenario-stakeholders"></div>
                     </div>
 
                 </div>
@@ -461,7 +476,8 @@
                 view: 'home',
                 activeCategory: null,
                 activeScenario: null,
-                currentRoleFilter: 'all'
+                currentRoleFilter: 'all',
+                completedSteps: new Set()
             },
 
             init() {
@@ -476,6 +492,7 @@
                 this.state.activeCategory = null;
                 this.state.activeScenario = null;
                 this.state.currentRoleFilter = 'all';
+                this.state.completedSteps.clear();
                 this.renderHome();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
@@ -491,6 +508,7 @@
                 this.state.view = 'scenario';
                 this.state.activeScenario = scenario;
                 this.state.currentRoleFilter = 'all';
+                this.state.completedSteps.clear();
                 this.renderScenario();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
@@ -510,7 +528,6 @@
                 const content = document.getElementById('glossary-content');
                 if (show) {
                     modal.classList.remove('hidden');
-                    // Small delay for animation
                     setTimeout(() => {
                         modal.classList.remove('opacity-0');
                         content.classList.remove('scale-95');
@@ -526,13 +543,38 @@
                 }
             },
 
+            toggleStep(stepId) {
+                const card = document.getElementById(stepId);
+                if (this.state.completedSteps.has(stepId)) {
+                    this.state.completedSteps.delete(stepId);
+                    card.classList.remove('step-completed');
+                } else {
+                    this.state.completedSteps.add(stepId);
+                    card.classList.add('step-completed');
+                }
+                this.updateProgressBar();
+            },
+
+            updateProgressBar() {
+                const totalSteps = this.state.activeScenario.steps.length;
+                const completedCount = this.state.completedSteps.size;
+                const percentage = Math.round((completedCount / totalSteps) * 100);
+                
+                const bar = document.getElementById('progress-bar');
+                const text = document.getElementById('progress-text');
+                
+                if(bar && text) {
+                    bar.style.width = `${percentage}%`;
+                    text.textContent = `${percentage}% Completed`;
+                }
+            },
+
             filterByRole(role) {
                 this.state.currentRoleFilter = role;
                 const steps = document.querySelectorAll('.step-card');
                 
                 steps.forEach(step => {
                     const owner = step.getAttribute('data-owner');
-                    
                     if (role === 'all') {
                         step.classList.remove('step-dimmed');
                     } else {
@@ -548,6 +590,51 @@
                         }
                     }
                 });
+            },
+
+            searchScenarios(query) {
+                const q = query.toLowerCase();
+                const buttons = document.querySelectorAll('#scenario-list button'); // Scenarios in category view
+                const catGrid = document.getElementById('category-grid');
+                
+                // Note: This is a basic implementation. Real search would likely span across all categories.
+                // For now, we'll just filter the current view if in a category, or show nothing if on home.
+                // A more robust search requires re-rendering. Let's just re-render all matches if query exists.
+                
+                if (q.length > 2 && this.state.view === 'home') {
+                    // Basic Search: switch to a 'search results' view manually by modifying the grid
+                    // Ideally we'd have a search view state, but let's just filter visible categories/scenarios.
+                    // To keep it simple for this version, we won't implement cross-category search on home 
+                    // without a bigger refactor.
+                    // Instead, let's just clear the grid and show matching scenarios from ALL categories.
+                    
+                    catGrid.innerHTML = '';
+                    let found = false;
+                    
+                    CATEGORIES.forEach(cat => {
+                        DATA[cat.id].forEach(scen => {
+                            if (scen.title.toLowerCase().includes(q) || scen.type.toLowerCase().includes(q)) {
+                                found = true;
+                                // Create card similar to category view
+                                const btn = document.createElement('button');
+                                btn.className = `animate-fadeIn bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full mb-4`;
+                                btn.onclick = () => this.goScenario(scen);
+                                btn.innerHTML = `
+                                    <div class="flex-1">
+                                        <div class="text-xs font-bold text-blue-500 uppercase mb-1">${cat.title}</div>
+                                        <h3 class="text-xl font-bold text-slate-800">${scen.title}</h3>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i>
+                                `;
+                                catGrid.appendChild(btn);
+                            }
+                        });
+                    });
+                    if(!found) catGrid.innerHTML = '<div class="col-span-2 text-center text-slate-400 py-10">No scenarios found matching your search.</div>';
+                    lucide.createIcons();
+                } else if (q.length === 0 && this.state.view === 'home') {
+                    this.renderHome(); // Reset
+                }
             },
 
             // -- Helpers --
@@ -604,7 +691,6 @@
                         cardBg: 'bg-gradient-to-br from-indigo-50/50 to-white'
                     };
                 }
-                // Default
                 return { 
                     bg: 'bg-slate-200 text-slate-700', 
                     border: 'border-l-slate-400', 
@@ -614,42 +700,10 @@
             },
             
             getScenarioTheme(type) {
-                if (type.includes('Standard')) {
-                    return { 
-                        bg: 'bg-white', 
-                        border: 'border-sky-100', 
-                        icon: 'text-sky-600', 
-                        iconBg: 'bg-sky-50', 
-                        accent: 'bg-sky-500' 
-                    };
-                }
-                if (type.includes('POA') || type.includes('Rep')) {
-                    return { 
-                        bg: 'bg-white', 
-                        border: 'border-violet-100', 
-                        icon: 'text-violet-600', 
-                        iconBg: 'bg-violet-50', 
-                        accent: 'bg-violet-500' 
-                    };
-                }
-                if (type.includes('Company')) {
-                    return { 
-                        bg: 'bg-white', 
-                        border: 'border-amber-100', 
-                        icon: 'text-amber-700', 
-                        iconBg: 'bg-amber-50', 
-                        accent: 'bg-amber-500' 
-                    };
-                }
-                if (type.includes('Fleet')) {
-                    return { 
-                        bg: 'bg-white', 
-                        border: 'border-emerald-100', 
-                        icon: 'text-emerald-700', 
-                        iconBg: 'bg-emerald-50', 
-                        accent: 'bg-emerald-500' 
-                    };
-                }
+                if (type.includes('Standard')) return { bg: 'bg-white', border: 'border-sky-100', icon: 'text-sky-600', iconBg: 'bg-sky-50', accent: 'bg-sky-500' };
+                if (type.includes('POA') || type.includes('Rep')) return { bg: 'bg-white', border: 'border-violet-100', icon: 'text-violet-600', iconBg: 'bg-violet-50', accent: 'bg-violet-500' };
+                if (type.includes('Company')) return { bg: 'bg-white', border: 'border-amber-100', icon: 'text-amber-700', iconBg: 'bg-amber-50', accent: 'bg-amber-500' };
+                if (type.includes('Fleet')) return { bg: 'bg-white', border: 'border-emerald-100', icon: 'text-emerald-700', iconBg: 'bg-emerald-50', accent: 'bg-emerald-500' };
                 return { bg: 'bg-white', border: 'border-slate-100', icon: 'text-slate-400', iconBg: 'bg-slate-50', accent: 'bg-slate-300' };
             },
 
@@ -673,7 +727,6 @@
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('home-template');
                 const clone = template.content.cloneNode(true);
-                
                 const grid = clone.getElementById('category-grid');
                 
                 CATEGORIES.forEach(cat => {
@@ -692,14 +745,10 @@
                                     <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i>
                                 </div>
                             </div>
-                            
                             <h2 class="text-3xl font-bold text-slate-900 mb-3 tracking-tight">${cat.title}</h2>
                             <p class="text-slate-500 text-base leading-relaxed mb-8 font-medium">${cat.description}</p>
-                            
                             <div class="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
-                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors flex items-center">
-                                    Browse Scenarios
-                                </span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors flex items-center">Browse Scenarios</span>
                                 <span class="text-slate-300 group-hover:text-blue-400 text-xs font-mono">ID: ${cat.id.toUpperCase()}</span>
                             </div>
                         </div>
@@ -716,25 +765,18 @@
                 const catId = this.state.activeCategory;
                 const category = CATEGORIES.find(c => c.id === catId);
                 const scenarios = DATA[catId];
-
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('category-template');
                 const clone = template.content.cloneNode(true);
 
-                // Breadcrumbs & Header
                 clone.getElementById('crumb-category').textContent = category.title;
                 clone.getElementById('cat-header-title').textContent = category.title;
 
-                // List as Grid Cards
                 const list = clone.getElementById('scenario-list');
-                
                 scenarios.forEach((scen, index) => {
                     const btn = document.createElement('button');
                     const theme = this.getScenarioTheme(scen.type);
-
-                    // Stagger animation logic
                     btn.style.animationDelay = `${index * 75}ms`;
-                    
                     btn.className = `animate-slideIn ${theme.bg} p-6 rounded-2xl border-2 ${theme.border} shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full relative overflow-hidden`;
                     btn.onclick = () => this.goScenario(scen);
 
@@ -744,26 +786,17 @@
 
                     btn.innerHTML = `
                         <div class="absolute left-0 top-0 bottom-0 w-1.5 ${theme.accent} opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        
                         <div class="mr-6 ${theme.iconBg} p-4 rounded-xl border border-white/50 group-hover:scale-110 transition-transform shadow-sm flex-shrink-0">
                             <i data-lucide="${typeIcon}" class="w-8 h-8 ${theme.icon} transition-colors"></i>
                         </div>
-
                         <div class="flex-1 pr-6 min-w-0">
-                            <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate mb-2">
-                                ${scen.title}
-                            </h3>
+                            <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate mb-2">${scen.title}</h3>
                             <div class="flex flex-wrap items-center gap-3">
                                 <span class="bg-slate-50 px-2.5 py-1 rounded-md text-xs font-bold text-slate-600 border border-slate-100 uppercase tracking-wide">${scen.type}</span>
-                                <span class="flex items-center text-xs text-slate-500 font-medium">
-                                    <i data-lucide="list-checks" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.steps.length} Steps
-                                </span>
-                                <span class="flex items-center text-xs text-slate-500 font-medium">
-                                    <i data-lucide="users" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.stakeholders.length} Roles
-                                </span>
+                                <span class="flex items-center text-xs text-slate-500 font-medium"><i data-lucide="list-checks" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.steps.length} Steps</span>
+                                <span class="flex items-center text-xs text-slate-500 font-medium"><i data-lucide="users" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.stakeholders.length} Roles</span>
                             </div>
                         </div>
-                        
                         <div class="bg-slate-50 p-2 rounded-full border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors">
                             <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-blue-600"></i>
                         </div>
@@ -779,22 +812,15 @@
             renderScenario() {
                 const scenario = this.state.activeScenario;
                 const category = CATEGORIES.find(c => c.id === this.state.activeCategory);
-                
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('scenario-template');
                 const clone = template.content.cloneNode(true);
 
-                // Breadcrumbs & Title
                 clone.getElementById('crumb-cat-link').textContent = category.title;
                 clone.getElementById('crumb-scenario').textContent = scenario.title;
-                clone.getElementById('scenario-title').textContent = scenario.title;
-                clone.getElementById('step-count-badge').textContent = `${scenario.steps.length} Total Steps`;
-                
-                // Print specific elements
-                clone.getElementById('print-title').textContent = scenario.title;
-                clone.getElementById('print-meta').textContent = `${category.title} • ${scenario.type} Scenario • Generated via Dubizzle SOP Guide`;
+                clone.getElementById('header-cat-title').textContent = category.title;
+                clone.getElementById('header-scenario-title').textContent = scenario.title;
 
-                // 1. Stakeholders
                 const shContainer = clone.getElementById('scenario-stakeholders');
                 const filterSelect = clone.getElementById('role-filter');
                 const uniqueRoles = new Set(); 
@@ -809,9 +835,7 @@
                 });
 
                  scenario.steps.forEach(s => {
-                     if(s.owner && !s.type) { 
-                        s.owner.split('/').forEach(part => uniqueRoles.add(part.trim()));
-                     }
+                     if(s.owner && !s.type) s.owner.split('/').forEach(part => uniqueRoles.add(part.trim()));
                  });
 
                 Array.from(uniqueRoles).sort().forEach(role => {
@@ -821,12 +845,9 @@
                     filterSelect.appendChild(opt);
                 });
 
-                // 2. Docs Summary
                 const docsContainer = clone.getElementById('docs-summary');
                 const docsSet = new Set();
-                scenario.steps.forEach(s => {
-                    if (s.doc) docsSet.add(s.doc);
-                });
+                scenario.steps.forEach(s => { if (s.doc) docsSet.add(s.doc); });
 
                 if (docsSet.size === 0) {
                     docsContainer.innerHTML = '<span class="text-sm text-slate-400 italic px-2">No specific documents listed.</span>';
@@ -839,17 +860,13 @@
                     });
                 }
 
-                // 3. Render Steps
                 const stepsContainer = clone.getElementById('steps-container');
                 let phases = [];
                 let currentBatch = [];
                 
                 scenario.steps.forEach(step => {
                     if (step.type === 'checkpoint') {
-                        if (currentBatch.length > 0) {
-                            phases.push({ type: 'steps', data: currentBatch });
-                            currentBatch = [];
-                        }
+                        if (currentBatch.length > 0) { phases.push({ type: 'steps', data: currentBatch }); currentBatch = []; }
                         phases.push({ type: 'checkpoint', data: step });
                     } else {
                         currentBatch.push(step);
@@ -857,12 +874,11 @@
                 });
                 if (currentBatch.length > 0) phases.push({ type: 'steps', data: currentBatch });
 
-
                 phases.forEach((group, index) => {
                     if (group.type === 'checkpoint') {
                         const step = group.data;
                         const div = document.createElement('div');
-                        div.className = "step-card bg-gradient-to-br from-red-50 via-white to-red-50/30 border-2 border-red-100 rounded-2xl p-0 shadow-lg shadow-red-100/40 overflow-hidden mb-10 transform transition-all hover:scale-[1.01] break-inside-avoid";
+                        div.className = "step-card bg-gradient-to-br from-red-50 via-white to-red-50/30 border-2 border-red-100 rounded-2xl p-0 shadow-lg shadow-red-100/40 overflow-hidden mb-10 transform transition-all hover:scale-[1.01]";
                         div.setAttribute('data-owner', step.owner); 
                         div.innerHTML = `
                             <div class="bg-red-50/80 p-5 flex items-center border-b border-red-100 backdrop-blur-sm">
@@ -883,23 +899,24 @@
                     } 
                     else {
                         const phaseWrapper = document.createElement('div');
-                        // progress-line class adds the vertical line
                         phaseWrapper.className = "space-y-6 relative pl-8 pb-4 progress-line ml-4";
                         
                         group.data.forEach((step, stepIdx) => {
                             const styles = this.getRoleColorStyles(step.owner);
                             const roleIcon = this.getRoleIcon(step.owner);
+                            const uniqueId = `step-${step.step}-${index}`;
                             
                             const card = document.createElement('div');
-                            // Stagger animation based on index
+                            card.id = uniqueId;
                             card.style.animationDelay = `${stepIdx * 50}ms`;
+                            card.onclick = () => this.toggleStep(uniqueId);
                             
-                            card.className = `step-card animate-slideIn relative ${styles.cardBg} border-l-[3px] ${styles.border} rounded-r-2xl shadow-sm border-y border-r border-slate-200 p-6 hover:shadow-lg transition-all flex flex-col sm:flex-row gap-6 z-10 break-inside-avoid`;
+                            card.className = `step-card animate-slideIn relative ${styles.cardBg} border-l-[3px] ${styles.border} rounded-r-2xl shadow-sm border-y border-r border-slate-200 p-6 hover:shadow-lg flex flex-col sm:flex-row gap-6 z-10`;
                             card.setAttribute('data-owner', step.owner);
                             
                             card.innerHTML = `
                                 <div class="flex-shrink-0">
-                                    <div class="w-10 h-10 rounded-xl ${styles.bg} font-bold flex items-center justify-center text-sm ring-4 ring-white shadow-md border border-white">
+                                    <div class="w-10 h-10 rounded-xl ${styles.bg} step-icon-bg font-bold flex items-center justify-center text-sm ring-4 ring-white shadow-md border border-white transition-colors">
                                         ${step.step}
                                     </div>
                                 </div>
@@ -941,13 +958,11 @@
                 container.innerHTML = '';
                 container.appendChild(clone);
                 lucide.createIcons();
+                this.updateProgressBar();
             }
         };
 
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            app.init();
-        });
+        window.addEventListener('DOMContentLoaded', () => { app.init(); });
     </script>
 </body>
 </html>
