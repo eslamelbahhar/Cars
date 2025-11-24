@@ -1,568 +1,1371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dubizzle Cars Payment SOP Guide</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <title>Dubizzle Cars . Payment Process Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-page: #f3f4f6;
+      --bg-card: #ffffff;
+      --bg-chip: #e5e7eb;
+      --bg-chip-strong: #e0f2fe;
+      --bg-chip-managed: #dcfce7;
+      --bg-chip-auction: #fee2e2;
+      --border-subtle: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #4b5563;
+      --text-strong: #0f172a;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --radius-card: 14px;
+      --radius-chip: 999px;
+      --shadow-soft: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
 
-        .animate-fadeIn {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
 
-        /* Custom Scrollbar for modal */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
-        }
-    </style>
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px 14px 32px;
+    }
+
+    header {
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--text-strong);
+      letter-spacing: 0.01em;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 720px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-chip);
+      font-size: 0.75rem;
+      background: #e5e7eb;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .pill-managed {
+      background: var(--bg-chip-managed);
+    }
+
+    .pill-auction {
+      background: var(--bg-chip-auction);
+    }
+
+    .controls {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .controls-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 180px;
+      min-width: 0;
+    }
+
+    .controls-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    select,
+    input[type="search"] {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      color: var(--text-main);
+      background: #f9fafb;
+    }
+
+    select:focus,
+    input[type="search"]:focus,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .controls-actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+      flex: 1 1 140px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      font-size: 0.82rem;
+      padding: 6px 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+
+    .btn span.icon {
+      font-size: 0.85em;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-heading {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin: 16px 2px 8px;
+    }
+
+    .scenario-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .scenario-header {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .scenario-toggle {
+      border: 0;
+      padding: 0;
+      background: none;
+      width: 100%;
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .scenario-main-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-strong);
+      margin-bottom: 4px;
+    }
+
+    .scenario-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .scenario-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      padding: 3px 8px;
+      border-radius: var(--radius-chip);
+      font-size: 0.7rem;
+      background: var(--bg-chip);
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .tag-strong {
+      background: var(--bg-chip-strong);
+      color: #1d4ed8;
+      font-weight: 500;
+    }
+
+    .tag-type-managed {
+      background: var(--bg-chip-managed);
+      color: #166534;
+      font-weight: 600;
+    }
+
+    .tag-type-auction {
+      background: var(--bg-chip-auction);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    .chevron {
+      font-size: 1rem;
+      margin-top: 2px;
+      color: var(--text-muted);
+      flex: 0 0 auto;
+    }
+
+    .scenario-body {
+      padding: 10px 12px 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .scenario-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .key-points {
+      border-right: 1px solid var(--border-subtle);
+      padding-right: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .key-points {
+        border-right: 0;
+        border-bottom: 1px solid var(--border-subtle);
+        padding-right: 0;
+        padding-bottom: 10px;
+        margin-bottom: 4px;
+      }
+    }
+
+    .key-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .key-row {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .key-label {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 5px;
+      margin-bottom: 4px;
+    }
+
+    .chip-stage {
+      background: #eef2ff;
+      color: #4338ca;
+      border-radius: var(--radius-chip);
+      padding: 3px 8px;
+      font-size: 0.72rem;
+    }
+
+    .chip-role {
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: var(--radius-chip);
+      padding: 3px 8px;
+      font-size: 0.72rem;
+    }
+
+    .chip-payment {
+      background: #dcfce7;
+      color: #166534;
+      border-radius: var(--radius-chip);
+      padding: 3px 8px;
+      font-size: 0.72rem;
+    }
+
+    .detail-section-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .steps-list {
+      list-style: decimal;
+      padding-left: 18px;
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--text-main);
+    }
+
+    .steps-list li {
+      margin-bottom: 5px;
+    }
+
+    .steps-note {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-card {
+      margin-top: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      padding: 10px 12px 11px;
+      font-size: 0.82rem;
+      color: var(--text-main);
+    }
+
+    .footer-list {
+      padding-left: 16px;
+      margin: 6px 0 0;
+    }
+
+    .footer-list li {
+      margin-bottom: 4px;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900 pb-20 min-h-screen flex flex-col">
-
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-200">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center cursor-pointer" onclick="app.goHome()">
-                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3 text-white font-bold text-sm">D</div>
-                <h1 class="text-xl font-bold text-gray-900 tracking-tight select-none">
-                    Payment <span class="text-red-600">SOP</span> Guide
-                </h1>
-            </div>
-            <button onclick="app.toggleGlossary(true)" class="text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-50 transition-colors" title="Glossary">
-                <i data-lucide="book-open" class="w-5 h-5"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
-        
-        <!-- Critical Info Banner -->
-        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 flex items-start gap-3 shadow-sm">
-            <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
-            <div class="text-sm text-amber-800">
-                <p class="font-semibold">Important Policy:</p>
-                <p>If a payment is marked as "Verified" but the seller hasn't received it after 24 hours, contact Finance immediately. Payments must be resubmitted after issues are resolved.</p>
-            </div>
-        </div>
-
-        <!-- App Container where views will be injected -->
-        <div id="app-container"></div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="text-center text-gray-400 text-xs py-8 mt-auto border-t border-gray-200 bg-white">
-        <p>© Dubizzle Cars • Internal Training Document</p>
-    </footer>
-
-    <!-- Glossary Modal -->
-    <div id="glossary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300" id="glossary-content">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 class="text-xl font-bold text-gray-800 flex items-center">
-                    <i data-lucide="book-open" class="w-5 h-5 mr-2 text-blue-600"></i> Glossary
-                </h3>
-                <button onclick="app.toggleGlossary(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            <div class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" id="glossary-list">
-                <!-- Glossary items injected here -->
-            </div>
-            <div class="p-4 bg-gray-50 text-center border-t border-gray-100">
-                <button onclick="app.toggleGlossary(false)" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold shadow-md hover:shadow-lg">
-                    Close Guide
-                </button>
-            </div>
-        </div>
+<body>
+<div class="page">
+  <header>
+    <h1 class="title">Dubizzle Cars . Payment Process Guide</h1>
+    <p class="subtitle">
+      Interactive reference for managed and auction deals. Choose the deal type, open the relevant scenario, then use the key points and detailed checklist to confirm that payments can be safely requested and released.
+    </p>
+    <div class="pill-row" aria-hidden="true">
+      <div class="pill">For training and quick checks</div>
+      <div class="pill pill-managed">Managed Deals</div>
+      <div class="pill pill-auction">Auction Deals</div>
+      <div class="pill">Responsive layout</div>
+      <div class="pill">Keyboard accessible</div>
     </div>
+  </header>
 
-    <!-- Templates hidden from view -->
-    <template id="home-template">
-        <div class="animate-fadeIn">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Select a Service Type</h2>
-                <p class="text-lg text-gray-500">Choose the deal type to view specific payment checklists and responsibilities.</p>
+  <section class="controls" aria-label="Filters">
+    <div class="controls-group">
+      <label class="controls-label" for="typeFilter">Deal type</label>
+      <select id="typeFilter">
+        <option value="all">All deal types</option>
+        <option value="managed">Managed deals only</option>
+        <option value="auction">Auction deals only</option>
+      </select>
+    </div>
+    <div class="controls-group">
+      <label class="controls-label" for="textFilter">Quick search</label>
+      <input id="textFilter" type="search" placeholder="Search by role, document, keyword" />
+    </div>
+    <div class="controls-actions">
+      <button type="button" class="btn btn-primary" id="expandAll">
+        <span class="icon">＋</span><span>Expand all</span>
+      </button>
+      <button type="button" class="btn" id="collapseAll">
+        <span class="icon">−</span><span>Collapse all</span>
+      </button>
+    </div>
+  </section>
+
+  <main>
+    <h2 class="section-heading">Managed deals</h2>
+
+    <!-- Managed . Scenario 1 -->
+    <article class="scenario-card"
+             data-type="managed"
+             data-seller="individual"
+             data-buyer="individual">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="managed-1-body">
+          <div>
+            <div class="scenario-main-title">
+              Managed . Scenario 1 . Seller individual, buyer individual
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="category-grid">
-                <!-- Category Cards injected here -->
+            <div class="scenario-subtitle">
+              Standard managed deal where both parties are individuals. No POA involved.
             </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-managed">Managed</span>
+              <span class="tag">Seller . Individual</span>
+              <span class="tag">Buyer . Individual</span>
+              <span class="tag tag-strong">Transfer booking depends on FSR checks</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="managed-1-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            CSR or Purchaser, FSR, Transfer Agent, BO Team, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Seller EID and Mulkiya, SAA, BAA, buyer full payment, Transfer Agreement, buyer Mulkiya or Hayaza, CRM entries.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Transfer Agent confirms steps 6 to 8 are complete before requesting seller payment.
+          </p>
+
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Before listing . Purchaser or Call center</span>
+            <span class="chip-stage">After deposit . FSR</span>
+            <span class="chip-stage">Before transfer . Transfer Agent</span>
+            <span class="chip-stage">After transfer . Transfer Agent and BO Team</span>
+          </div>
+
+          <div class="key-title" style="margin-top:8px;">Responsibility focus</div>
+          <div class="chips-row">
+            <span class="chip-role">FSR . Checks points 1 to 5 before booking transfer</span>
+            <span class="chip-role">Transfer Agent . Checks points 6 to 8 before seller payment request</span>
+            <span class="chip-payment">Finance . Verifies buyer payment before transfer</span>
+          </div>
         </div>
-    </template>
 
-    <template id="category-template">
-        <div class="animate-fadeIn">
-            <button onclick="app.goHome()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
-                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Categories
-            </button>
-            
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center" id="cat-header">
-                <!-- Header injected here -->
-            </h2>
-
-            <div class="grid grid-cols-1 gap-4" id="scenario-list">
-                <!-- Scenario buttons injected here -->
-            </div>
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Seller Emirates ID.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Seller Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Signed SAA. Name and signature must match the seller name on the Mulkiya.
+              <div class="steps-note">
+                Generated and updated by the Purchaser or Call center before listing the car.
+              </div>
+            </li>
+            <li>
+              Signed BAA. Signed by the buyer, with buyer name as per the Mulkiya.
+              <div class="steps-note">
+                Generated and updated by the FSR after deposit is collected.
+              </div>
+            </li>
+            <li>
+              Full payment from the buyer.
+              <div class="steps-note">
+                Collected by the FSR and verified by Finance before booking the transfer.
+                Points 1 to 5 are checked by the FSR before booking the transfer.
+              </div>
+            </li>
+            <li>
+              Signed Transfer Agreement form.
+              <div class="steps-note">
+                If the beneficiary is someone other than the seller, obtain Emirates ID for an individual or trade license for a company account.
+                Generated and updated by the Transfer Agent before transfer.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after transfer completion.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team after the Transfer Agent shares buyer Mulkiya in the WhatsApp group.  
+                Seller and buyer names as per the Mulkiya or registration card.  
+                Selling price, success fee, and buyer fee are correct and updated by the Transfer Agent before transfer.  
+                Points 6 to 8 are checked by the Transfer Agent before requesting seller payment.
+              </div>
+            </li>
+          </ol>
         </div>
-    </template>
+      </div>
+    </article>
 
-    <template id="scenario-template">
-        <div class="animate-fadeIn">
-            <button onclick="app.goBackToCategory()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
-                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Scenarios
-            </button>
-
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-gray-100">
-                <div class="p-6 bg-gradient-to-r from-slate-800 to-slate-900 text-white">
-                    <h2 class="text-2xl font-bold" id="scenario-title"></h2>
-                    <div class="flex flex-wrap gap-2 mt-3" id="scenario-stakeholders"></div>
-                </div>
-                
-                <div class="p-6 bg-gray-50">
-                    <div class="max-w-3xl mx-auto" id="steps-container">
-                        <!-- Steps injected here -->
-                    </div>
-                </div>
+    <!-- Managed . Scenario 2 -->
+    <article class="scenario-card"
+             data-type="managed"
+             data-seller="individual+poa"
+             data-buyer="individual">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="managed-2-body">
+          <div>
+            <div class="scenario-main-title">
+              Managed . Scenario 2 . Seller individual with POA, buyer individual
             </div>
+            <div class="scenario-subtitle">
+              Seller is an individual but an authorized representative handles the transaction.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-managed">Managed</span>
+              <span class="tag">Seller . Individual with POA</span>
+              <span class="tag">Buyer . Individual</span>
+              <span class="tag tag-strong">POA and representative ID must be validated</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="managed-2-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            CSR or Purchaser, Transfer Agent, FSR, BO Team, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Seller EID, seller Mulkiya, POA, authorized representative Emirates ID, SAA, BAA, buyer payment, Transfer Agreement, buyer Mulkiya or Hayaza, CRM update.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Transfer Agent confirms points 8 to 10 before requesting seller payment.
+          </p>
+
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Before listing . Purchaser or Call center</span>
+            <span class="chip-stage">At transfer . Transfer Agent validates POA</span>
+            <span class="chip-stage">After deposit . FSR issues BAA</span>
+            <span class="chip-stage">After transfer . Transfer Agent and BO Team</span>
+          </div>
+
+          <div class="key-title" style="margin-top:8px;">Responsibility focus</div>
+          <div class="chips-row">
+            <span class="chip-role">FSR . Checks points 1 to 7 before booking transfer</span>
+            <span class="chip-role">Transfer Agent . Checks points 8 to 10 before seller payment request</span>
+          </div>
         </div>
-    </template>
 
-    <script>
-        // --- DATA ---
-        const GLOSSARY = {
-            SAA: "Seller Assist Agreement (Managed)",
-            BAA: "Buyer Assist Agreement (Managed)",
-            TA_Form: "Transfer Agreement Form (Managed)",
-            POA: "Power of Attorney",
-            VSA: "Vehicle Sales Agreement (Auction)",
-            CSR: "Customer Service Representative",
-            FSR: "Field Sales Representative",
-            TA: "Transfer Agent",
-            DRE: "Dealer Relations Executive",
-            BO: "Back Office",
-            PMS: "Profit Margin Scheme"
-        };
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Seller Emirates ID.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Seller Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              POA.
+              <div class="steps-note">
+                Checked and collected by the Transfer Agent at the time of transfer.
+              </div>
+            </li>
+            <li>
+              Authorized representative Emirates ID, name must match the POA.
+              <div class="steps-note">
+                Checked and collected by the Transfer Agent at the time of transfer.
+              </div>
+            </li>
+            <li>
+              Signed SAA. Name and signature must match the seller name in the Mulkiya or POA.
+              <div class="steps-note">
+                Generated and updated by the Purchaser or Call center before listing the car.
+              </div>
+            </li>
+            <li>
+              Signed BAA. Signed by the buyer, name as per the Mulkiya.
+              <div class="steps-note">
+                Generated and updated by the FSR after deposit is collected.
+              </div>
+            </li>
+            <li>
+              Full payment from the buyer.
+              <div class="steps-note">
+                Collected by the FSR and verified by Finance before booking the transfer.
+                Points 1 to 7 are checked by the FSR before booking the transfer.
+              </div>
+            </li>
+            <li>
+              Signed Transfer Agreement form, signed by the seller or by the POA.
+              <div class="steps-note">
+                If the beneficiary is someone other than the seller, provide Emirates ID for individual or trade license for company account.  
+                Generated and updated by the Transfer Agent before transfer.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after transfer completion.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team after the Transfer Agent shares buyer Mulkiya in the WhatsApp group.  
+                Seller and buyer names as per Mulkiya or registration card.  
+                Selling price, success fee, and buyer fee correct and updated by Transfer Agent before transfer.  
+                Points 8 to 10 are checked by the Transfer Agent before requesting seller payment.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </article>
 
-        const CATEGORIES = [
-            {
-                id: 'managed',
-                title: 'Managed Deals',
-                iconName: 'car',
-                color: 'bg-blue-600',
-                textColor: 'text-blue-600',
-                description: 'Processes for Seller Assist & Buyer Assist services'
-            },
-            {
-                id: 'auction',
-                title: 'Auction Deals',
-                iconName: 'gavel',
-                color: 'bg-orange-600',
-                textColor: 'text-orange-600',
-                description: 'Processes for B2B Auction transactions'
-            }
-        ];
+    <!-- Managed . Scenario 3 -->
+    <article class="scenario-card"
+             data-type="managed"
+             data-seller="company"
+             data-buyer="individual">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="managed-3-body">
+          <div>
+            <div class="scenario-main-title">
+              Managed . Scenario 3 . Seller company with representative, buyer individual
+            </div>
+            <div class="scenario-subtitle">
+              Company sells with a representative handling the transaction.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-managed">Managed</span>
+              <span class="tag">Seller . Company</span>
+              <span class="tag">Representative . Named on trade license or POA</span>
+              <span class="tag">Buyer . Individual</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="managed-3-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            CSR or Purchaser, Transfer Agent, FSR, BO Team, Finance, Auction TL if buyer is company representative or POA.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Company trade license, company Mulkiya, representative Emirates ID, SAA, BAA, buyer payment, Transfer Agreement, buyer Mulkiya or Hayaza, CRM updates.  
+            Extra documents if buyer is company representative or POA.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Transfer Agent checks points 7 to 9 before requesting seller payment.
+          </p>
 
-        const DATA = {
-            managed: [
-                {
-                    id: 'm1',
-                    title: 'Individual Seller → Individual Buyer',
-                    stakeholders: ['CSR', 'Purchaser', 'FSR', 'Finance', 'Transfer Agent', 'BO Team'],
-                    steps: [
-                        { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Emirates ID", details: "Collected and updated in system." },
-                        { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Registration Card", details: "Collected and updated in system." },
-                        { step: 3, action: "Generate & Sign SAA", timing: "Before listing car", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Name and Signature should match the Seller’s name in the Mulkiya." },
-                        { step: 4, action: "Generate & Sign BAA", timing: "After deposit collected", owner: "FSR", doc: "Signed BAA", details: "Signed by the buyer. Name must match the mulkiya." },
-                        { step: 5, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment Proof", details: "Collected from FSR and verified by Finance." },
-                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'FSR must verify points 1 to 5 before booking the transfer.' },
-                        { step: 6, action: "Signed Transfer Agreement Form", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "If beneficiary ≠ seller, provide EID (Indiv) or Trade License (Company)." },
-                        { step: 7, action: "Update Buyer's Mulkiya / Hayaza", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya / Hayaza", details: "Updated in system after transfer completion." },
-                        { step: 8, action: "Final CRM Update", timing: "Post Transfer", owner: "BO Team / Transfer Agent", doc: "CRM Record", details: "Mark sold (BO Team). Verify Names (Checked in pt 3&4). Verify Selling price/fees (TA)." },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Transfer Agent verifies points 6 to 8 before requesting Seller Payment.' }
-                    ]
-                },
-                {
-                    id: 'm2',
-                    title: 'Individual Seller (via Rep) → Individual Buyer',
-                    stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'],
-                    steps: [
-                        { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
-                        { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 3, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "Power of Attorney" },
-                        { step: 4, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match POA." },
-                        { step: 5, action: "Sign SAA", timing: "Before Listing", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Matches Mulkiya or POA." },
-                        { step: 6, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA", details: "Signed by buyer." },
-                        { step: 7, action: "Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment", details: "Verified by Finance." },
-                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-7 before booking transfer.' },
-                        { step: 8, action: "Sign TA Form (Seller or POA)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary check required." },
-                        { step: 9, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
-                        { step: 10, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM", details: "Mark sold, verify prices/fees." },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 8-10 before requesting Seller Payment.' }
-                    ]
-                },
-                {
-                    id: 'm3',
-                    title: 'Company Seller (via Rep) → Individual Buyer',
-                    stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'],
-                    steps: [
-                        { step: 1, action: "Collect Trade License", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Trade License" },
-                        { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 3, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match License." },
-                        { step: 4, action: "Sign SAA (Rep)", timing: "Before Listing", owner: "Purchaser / CC", doc: "Signed SAA", details: "Signatory matches License/POA." },
-                        { step: 5, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA" },
-                        { step: 6, action: "Full Payment", timing: "Before Transfer", owner: "FSR / Finance", doc: "Payment" },
-                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-6 before booking transfer.' },
-                        { step: 7, action: "Sign TA Form (Rep)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary is Company or Rep." },
-                        { step: 8, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
-                        { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM" },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 7-9 before requesting Seller Payment.' }
-                    ]
-                }
-            ],
-            auction: [
-                {
-                    id: 'a1',
-                    title: 'Individual Seller → Individual/Company Buyer',
-                    stakeholders: ['Purchaser', 'Auction Team', 'CSR', 'DRE', 'Transfer Agent', 'BO Team'],
-                    steps: [
-                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser / Auction Team", doc: "Email", details: "If below criteria, Manager approval required." },
-                        { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
-                        { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 4, action: "Sign VSA", timing: "After Deal Finalization", owner: "Purchaser", doc: "Signed VSA", details: "Check beneficiary details." },
-                        { step: 5, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
-                        { step: 6, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "DRE / Finance", doc: "Payment", details: "Collected by DRE, Verified by Finance." },
-                        { step: 7, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM", details: "Mark Sold (BO), VAT (Purchaser), Fees (DRE/TA), Deductions (Auction TL)." },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
-                    ]
-                },
-                {
-                    id: 'a2',
-                    title: 'Individual Seller (via Rep) → Individual/Company Buyer',
-                    stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'],
-                    steps: [
-                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" },
-                        { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
-                        { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 4, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "POA" },
-                        { step: 5, action: "Collect Rep EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID" },
-                        { step: 6, action: "Sign VSA (Seller/POA)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" },
-                        { step: 7, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
-                        { step: 8, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
-                        { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
-                    ]
-                },
-                {
-                    id: 'a3',
-                    title: 'Company Seller (via Rep) → Individual/Company Buyer',
-                    stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'],
-                    steps: [
-                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" },
-                        { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 3, action: "Collect Rep EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Rep EID" },
-                        { step: 4, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" },
-                        { step: 5, action: "Sign VSA (Rep)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" },
-                        { step: 6, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
-                        { step: 7, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
-                        { step: 8, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
-                    ]
-                },
-                {
-                    id: 'a4',
-                    title: 'Company Seller (Auction-Fleet) → Individual/Company Buyer',
-                    stakeholders: ['CSR', 'Purchaser', 'DRE', 'Finance'],
-                    steps: [
-                        { step: 1, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
-                        { step: 2, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" },
-                        { step: 3, action: "Collect Proforma Invoice", timing: "Before Deal Closure", owner: "Purchaser", doc: "Proforma Inv", details: "Signed and stamped." },
-                        { step: 4, action: "Email Confirmation", timing: "Chain Start", owner: "Purchaser", doc: "Email", details: "Needs Aatif's approval." },
-                        { step: 5, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
-                        { step: 6, action: "CRM Update", timing: "Post Transfer", owner: "Purchaser", doc: "CRM", details: "Seller Name, VAT Status, Purchase Price." },
-                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
-                    ]
-                }
-            ]
-        };
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Before listing . Purchaser or Call center</span>
+            <span class="chip-stage">After deposit . FSR</span>
+            <span class="chip-stage">Before transfer . Transfer Agent</span>
+            <span class="chip-stage">After transfer . Transfer Agent and BO Team</span>
+          </div>
 
-        // --- APP LOGIC ---
+          <div class="key-title" style="margin-top:8px;">Responsibility focus</div>
+          <div class="chips-row">
+            <span class="chip-role">FSR . Checks points 1 to 6 before booking transfer</span>
+            <span class="chip-role">Transfer Agent . Checks points 7 to 9 before seller payment request</span>
+          </div>
+        </div>
 
-        const app = {
-            state: {
-                view: 'home', // home, category, scenario
-                activeCategory: null,
-                activeScenario: null
-            },
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Company trade license.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Company Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Representative Emirates ID. Name must be mentioned on the license.
+              <div class="steps-note">
+                Checked and updated by the Transfer Agent at the time of transfer.
+              </div>
+            </li>
+            <li>
+              Signed SAA by the representative. Name and signature of the person signing must match POA, or the name must be on the trade license.
+              <div class="steps-note">
+                Generated and updated by the Purchaser or Call center before listing the car.
+              </div>
+            </li>
+            <li>
+              Signed BAA. Signed by the buyer, name as per the Mulkiya.
+              <div class="steps-note">
+                Generated and updated by the FSR after deposit is collected.
+              </div>
+            </li>
+            <li>
+              Full payment from the buyer.
+              <div class="steps-note">
+                Collected by the FSR and verified by Finance before booking the transfer.  
+                Points 1 to 6 are checked by the FSR before booking the transfer.
+              </div>
+            </li>
+            <li>
+              Signed Transfer Agreement form by the representative.
+              <div class="steps-note">
+                Beneficiary is either the company account or representative account.  
+                Generated and updated by the Transfer Agent before transfer.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after transfer completion.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team after the Transfer Agent shares buyer Mulkiya in the WhatsApp group.  
+                Seller and buyer names as per Mulkiya or registration card.  
+                Selling price, success fee, and buyer fee correct and updated by Transfer Agent before transfer.  
+                Points 7 to 9 are checked by the Transfer Agent before requesting seller payment.
+              </div>
+            </li>
+          </ol>
 
-            init() {
-                this.renderGlossaryList();
-                this.renderHome();
-            },
+          <p class="steps-note">
+            In cases where the buyer is a company representative or acts via POA, additional requirements apply.  
+            These include company trade license, representative Emirates ID (listed on license or POA), POA, and signed BAA by the authorized representative.  
+            CRM buyer information must reflect the details as per the Mulkiya.
+          </p>
+        </div>
+      </div>
+    </article>
 
-            // -- Navigation --
+    <h2 class="section-heading">Auction deals</h2>
 
-            goHome() {
-                this.state.view = 'home';
-                this.state.activeCategory = null;
-                this.state.activeScenario = null;
-                this.renderHome();
-            },
+    <!-- Auction . Scenario 1 -->
+    <article class="scenario-card"
+             data-type="auction"
+             data-seller="individual"
+             data-buyer="individual+company">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="auction-1-body">
+          <div>
+            <div class="scenario-main-title">
+              Auction . Scenario 1 . Seller individual, buyer individual or company
+            </div>
+            <div class="scenario-subtitle">
+              Standard auction deal with individual seller and individual or company buyer.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-auction">Auction</span>
+              <span class="tag">Seller . Individual</span>
+              <span class="tag">Buyer . Individual or company</span>
+              <span class="tag tag-strong">Auction email and VSA drive CRM entries</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="auction-1-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            Purchaser, Auction stakeholders, CSR, DRE, Transfer Agent, BO Team, Auction TL, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Auction team email approval, seller EID and Mulkiya, signed VSA, buyer Mulkiya or Hayaza, full payment from dealer, CRM entries including VAT, fees, and highest bid details.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Purchaser checks all points before requesting seller payment.
+          </p>
 
-            goCategory(catId) {
-                this.state.view = 'category';
-                this.state.activeCategory = catId;
-                this.renderCategory();
-            },
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Auction approval . Email chain</span>
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Deal finalisation . VSA</span>
+            <span class="chip-stage">After transfer . Transfer Agent updates buyer Mulkiya</span>
+            <span class="chip-stage">Before seller payment . CRM fully updated</span>
+          </div>
 
-            goScenario(scenario) {
-                this.state.view = 'scenario';
-                this.state.activeScenario = scenario;
-                this.renderScenario();
-            },
+          <div class="key-title" style="margin-top:8px;">Responsibility focus</div>
+          <div class="chips-row">
+            <span class="chip-role">Purchaser . Starts email chain and checks all points</span>
+            <span class="chip-role">DRE and Finance . Verify dealer payment before transfer</span>
+            <span class="chip-role">Auction TL . Highest bid and seller deductions</span>
+          </div>
+        </div>
 
-            goBackToCategory() {
-                if(this.state.activeCategory) {
-                    this.goCategory(this.state.activeCategory);
-                } else {
-                    this.goHome();
-                }
-            },
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Email confirmation from the auction team.
+              <div class="steps-note">
+                If the deal is below the auction criteria, Faizan approval is required.  
+                Purchaser starts the chain and auction stakeholders approve.
+              </div>
+            </li>
+            <li>
+              Seller Emirates ID.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Seller Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Signed VSA.
+              <div class="steps-note">
+                If the beneficiary is someone other than the seller, obtain Emirates ID for individual or trade license for company account.  
+                Purchaser updates after deal finalisation.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after the transfer is completed.
+              </div>
+            </li>
+            <li>
+              Full payment from the dealer.
+              <div class="steps-note">
+                Collected by DRE and verified by Finance before booking transfer.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team.  
+                Seller name as per Mulkiya or registration card via VSA.  
+                VAT status PMS, updated by Purchaser at deal closure.  
+                Purchase price via VSA.  
+                Seller admin fees updated by Purchaser at deal closure.  
+                Selling price, dealer admin fees and dealer transfer fees updated by DRE and then finalised by Transfer Agent in CRM.  
+                RTA fees, fines and passing cost updated by Transfer Agent.  
+                Seller deductions updated in CRM by Auction TL.  
+                Highest bid recorded and, if not, the reason noted in the approval email by Auction TL.  
+                All points are checked by Purchaser before requesting seller payment.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </article>
 
-            toggleGlossary(show) {
-                const modal = document.getElementById('glossary-modal');
-                const content = document.getElementById('glossary-content');
-                if (show) {
-                    modal.classList.remove('hidden');
-                    // Small delay to allow removing hidden before adding opacity
-                    setTimeout(() => {
-                        modal.classList.remove('opacity-0');
-                        content.classList.remove('scale-95');
-                        content.classList.add('scale-100');
-                    }, 10);
-                } else {
-                    modal.classList.add('opacity-0');
-                    content.classList.remove('scale-100');
-                    content.classList.add('scale-95');
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                    }, 300);
-                }
-            },
+    <!-- Auction . Scenario 2 -->
+    <article class="scenario-card"
+             data-type="auction"
+             data-seller="individual+poa"
+             data-buyer="individual+company">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="auction-2-body">
+          <div>
+            <div class="scenario-main-title">
+              Auction . Scenario 2 . Seller individual with POA, buyer individual or company
+            </div>
+            <div class="scenario-subtitle">
+              Individual seller, authorized representative handles the auction sale.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-auction">Auction</span>
+              <span class="tag">Seller . Individual with POA</span>
+              <span class="tag">Buyer . Individual or company</span>
+              <span class="tag tag-strong">Representative details are critical for payout</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="auction-2-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            Purchaser, Auction stakeholders, CSR, Transfer Agent, DRE, BO Team, Auction TL, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Auction email, seller EID and Mulkiya, POA, representative Emirates ID, signed VSA, buyer Mulkiya or Hayaza, dealer payment, CRM details including VAT and fees.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Purchaser checks all points before requesting seller payment, with POA validations complete.
+          </p>
 
-            // -- Helpers --
-            
-            getRoleIcon(role) {
-                const r = role.toLowerCase();
-                if (r.includes('finance') || r.includes('dre')) return 'credit-card';
-                if (r.includes('purchaser') || r.includes('buyer')) return 'user-check';
-                if (r.includes('transfer')) return 'file-text';
-                if (r.includes('bo')) return 'building';
-                return 'users';
-            },
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Auction approval . Email chain</span>
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Transfer time . POA and representative ID checked</span>
+            <span class="chip-stage">After transfer . Transfer Agent updates buyer Mulkiya</span>
+            <span class="chip-stage">Before payout . CRM fully updated</span>
+          </div>
+        </div>
 
-            // -- Renderers --
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Email confirmation from the auction team.
+              <div class="steps-note">
+                If below auction criteria, Faizan approval required.  
+                Purchaser starts the chain and auction stakeholders approve.
+              </div>
+            </li>
+            <li>
+              Seller Emirates ID.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Seller Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              POA.
+              <div class="steps-note">
+                Checked and collected by the Transfer Agent at the time of transfer.
+              </div>
+            </li>
+            <li>
+              Authorized representative Emirates ID. Name must be on the POA.
+              <div class="steps-note">
+                Checked by the Transfer Agent at the time of transfer.
+              </div>
+            </li>
+            <li>
+              Signed VSA, signed by seller or POA.
+              <div class="steps-note">
+                If beneficiary is someone other than the seller, obtain Emirates ID for individual or trade license for company account.  
+                Purchaser updates after deal finalisation.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after the transfer is completed.
+              </div>
+            </li>
+            <li>
+              Full payment from the dealer.
+              <div class="steps-note">
+                Collected by DRE and verified by Finance before booking transfer.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team.  
+                Seller name as per Mulkiya or registration card via VSA.  
+                VAT status PMS updated by Purchaser at deal closure.  
+                Purchase price via VSA.  
+                Seller admin fees updated by Purchaser at deal closure.  
+                Selling price, dealer admin fees and dealer transfer fees updated by DRE and finalised by Transfer Agent in CRM.  
+                RTA fees, fines and passing cost updated by Transfer Agent.  
+                Seller deductions updated in CRM by Auction TL.  
+                Highest bid or reason if not highest bid recorded in approval email by Auction TL.  
+                All points checked by Purchaser before requesting seller payment.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </article>
 
-            renderGlossaryList() {
-                const list = document.getElementById('glossary-list');
-                list.innerHTML = '';
-                Object.entries(GLOSSARY).forEach(([key, val]) => {
-                    const div = document.createElement('div');
-                    div.className = "flex flex-col border-b border-gray-50 pb-2 last:border-0";
-                    div.innerHTML = `
-                        <span class="font-bold text-blue-700">${key.replace('_', ' ')}</span>
-                        <span class="text-gray-600 text-sm">${val}</span>
-                    `;
-                    list.appendChild(div);
-                });
-            },
+    <!-- Auction . Scenario 3 -->
+    <article class="scenario-card"
+             data-type="auction"
+             data-seller="company"
+             data-buyer="individual+company">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="auction-3-body">
+          <div>
+            <div class="scenario-main-title">
+              Auction . Scenario 3 . Seller company with representative, buyer individual or company
+            </div>
+            <div class="scenario-subtitle">
+              Company seller, representative handles the deal.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-auction">Auction</span>
+              <span class="tag">Seller . Company</span>
+              <span class="tag">Representative . Named on license</span>
+              <span class="tag">Buyer . Individual or company</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="auction-3-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            Purchaser, Auction stakeholders, CSR, DRE, Transfer Agent, BO Team, Auction TL, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Auction email, company Mulkiya, representative Emirates ID, company trade license, signed VSA, buyer Mulkiya or Hayaza, dealer payment, CRM entries.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Purchaser checks points 1 to 8 before requesting seller payment.
+          </p>
 
-            renderHome() {
-                const container = document.getElementById('app-container');
-                const template = document.getElementById('home-template');
-                const clone = template.content.cloneNode(true);
-                
-                const grid = clone.getElementById('category-grid');
-                
-                CATEGORIES.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = "group relative overflow-hidden rounded-2xl bg-white shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 text-left w-full";
-                    btn.onclick = () => this.goCategory(cat.id);
-                    
-                    btn.innerHTML = `
-                        <div class="h-2 w-full ${cat.color}"></div>
-                        <div class="p-8">
-                            <div class="inline-flex p-3 rounded-xl ${cat.color} bg-opacity-10 mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="${cat.iconName}" class="w-8 h-8 ${cat.textColor}"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">${cat.title}</h2>
-                            <p class="text-gray-500">${cat.description}</p>
-                            
-                            <div class="mt-6 flex items-center text-sm font-semibold text-gray-600 group-hover:text-gray-900">
-                                View Scenarios <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(btn);
-                });
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Auction approval . Email chain</span>
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Before deal closure . Trade license ready</span>
+            <span class="chip-stage">After transfer . Buyer Mulkiya updated</span>
+            <span class="chip-stage">Before payout . CRM complete</span>
+          </div>
+        </div>
 
-                container.innerHTML = '';
-                container.appendChild(clone);
-                lucide.createIcons();
-            },
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Email confirmation from the auction team.
+              <div class="steps-note">
+                If below auction criteria, Faizan approval required.  
+                Purchaser starts the chain and auction stakeholders approve.
+              </div>
+            </li>
+            <li>
+              Company Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Representative Emirates ID. Name must be mentioned in the license.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Company trade license.
+              <div class="steps-note">
+                Collected and updated by the Purchaser before deal closure.
+              </div>
+            </li>
+            <li>
+              Signed VSA by the representative.
+              <div class="steps-note">
+                Beneficiary is either the company account or representative account.  
+                Purchaser updates after deal finalisation.
+              </div>
+            </li>
+            <li>
+              Buyer Mulkiya or registration card or Hayaza or possession certificate.
+              <div class="steps-note">
+                Updated by the Transfer Agent after the transfer is completed.
+              </div>
+            </li>
+            <li>
+              Full payment from the dealer.
+              <div class="steps-note">
+                Collected by DRE and verified by Finance before booking transfer.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Marked sold by BO Team.  
+                Seller name as per Mulkiya or registration card via VSA.  
+                VAT status PMS updated by Purchaser at deal closure.  
+                Purchase price via VSA.  
+                Seller admin fees updated by Purchaser at deal closure.  
+                Selling price, dealer admin fees and dealer transfer fees updated by DRE and then Transfer Agent in CRM.  
+                RTA fees, fines and passing cost updated by Transfer Agent.  
+                Seller deductions and highest bid details recorded by Auction TL.  
+                All points checked by Purchaser before requesting seller payment.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </article>
 
-            renderCategory() {
-                const catId = this.state.activeCategory;
-                const category = CATEGORIES.find(c => c.id === catId);
-                const scenarios = DATA[catId];
+    <!-- Auction . Scenario 4 -->
+    <article class="scenario-card"
+             data-type="auction"
+             data-seller="company-fleet"
+             data-buyer="individual+company">
+      <div class="scenario-header">
+        <button class="scenario-toggle"
+                aria-expanded="false"
+                aria-controls="auction-4-body">
+          <div>
+            <div class="scenario-main-title">
+              Auction . Scenario 4 . Seller company (fleet), buyer individual or company
+            </div>
+            <div class="scenario-subtitle">
+              Fleet auction sale with proforma invoice and specific VAT handling.
+            </div>
+            <div class="scenario-tags">
+              <span class="tag tag-type-auction">Auction</span>
+              <span class="tag">Seller . Company fleet</span>
+              <span class="tag">Buyer . Individual or company</span>
+              <span class="tag tag-strong">Proforma invoice required before deal closure</span>
+            </div>
+          </div>
+          <div class="chevron" aria-hidden="true">▹</div>
+        </button>
+      </div>
+      <div class="scenario-body" id="auction-4-body" hidden>
+        <div class="key-points">
+          <div class="key-title">Key points</div>
+          <p class="key-row">
+            <span class="key-label">Main roles.</span>
+            CSR, Purchaser, Aatif for approval, DRE, Finance.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Critical documents.</span>
+            Seller Mulkiya, company trade license, signed and stamped proforma invoice, auction email approval, full payment from dealer, CRM VAT and price entries.
+          </p>
+          <p class="key-row">
+            <span class="key-label">Payment release condition.</span>
+            Purchaser checks points 1 to 6 before requesting seller payment.
+          </p>
 
-                const container = document.getElementById('app-container');
-                const template = document.getElementById('category-template');
-                const clone = template.content.cloneNode(true);
+          <div class="key-title" style="margin-top:8px;">Timeline</div>
+          <div class="chips-row">
+            <span class="chip-stage">Check in . CSR or Purchaser</span>
+            <span class="chip-stage">Before deal closure . Trade license and proforma invoice</span>
+            <span class="chip-stage">Auction approval . Aatif</span>
+            <span class="chip-stage">Before transfer . Dealer payment verified</span>
+          </div>
+        </div>
 
-                // Header
-                const header = clone.getElementById('cat-header');
-                header.innerHTML = `<span class="w-3 h-8 ${category.color} mr-3 rounded-full"></span> ${category.title} Scenarios`;
+        <div>
+          <div class="detail-section-title">Detailed checklist</div>
+          <ol class="steps-list">
+            <li>
+              Seller Mulkiya or registration card.
+              <div class="steps-note">
+                Collected and updated at check in by the CSR or Purchaser.
+              </div>
+            </li>
+            <li>
+              Company trade license.
+              <div class="steps-note">
+                Collected and updated by the Purchaser before deal closure.
+              </div>
+            </li>
+            <li>
+              Proforma invoice, signed and stamped.
+              <div class="steps-note">
+                Collected and updated by the Purchaser before deal closure.
+              </div>
+            </li>
+            <li>
+              Email confirmation from auction team.
+              <div class="steps-note">
+                Aatif approval is required.  
+                Purchaser starts the chain and Aatif approves.
+              </div>
+            </li>
+            <li>
+              Full payment from the dealer.
+              <div class="steps-note">
+                Collected by DRE and verified by Finance before booking transfer.
+              </div>
+            </li>
+            <li>
+              CRM updated.
+              <div class="steps-note">
+                Seller name as per Mulkiya or registration card.  
+                VAT status B2B or PMS updated by Purchaser at deal closure.  
+                Purchase price via VSA.  
+                All points checked by Purchaser before requesting seller payment.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </article>
 
-                // List
-                const list = clone.getElementById('scenario-list');
-                scenarios.forEach(scen => {
-                    const btn = document.createElement('button');
-                    btn.className = "bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left flex justify-between items-center group w-full";
-                    // We need to bind the click
-                    btn.addEventListener('click', () => this.goScenario(scen));
+    <section class="footer-card" aria-label="Important payment notes">
+      <div class="key-title">Important payment notes</div>
+      <ul class="footer-list">
+        <li>
+          <span class="highlight">Payments must be resubmitted</span> after any issues are resolved.
+        </li>
+        <li>
+          Anyone inquiring about a payment can refer to the daily seller email or CRM for current status.
+        </li>
+        <li>
+          If a payment is marked as verified and the seller has not received payment after 24 hours, contact Finance.  
+          It should then be investigated without delay.
+        </li>
+      </ul>
+    </section>
+  </main>
+</div>
 
-                    btn.innerHTML = `
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-                                ${scen.title}
-                            </h3>
-                            <p class="text-sm text-gray-500 mt-1">
-                                ${scen.steps.length} Steps • ${scen.stakeholders.length} Stakeholders
-                            </p>
-                        </div>
-                        <div class="bg-gray-50 p-2 rounded-full group-hover:bg-blue-50 transition-colors">
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-500"></i>
-                        </div>
-                    `;
-                    list.appendChild(btn);
-                });
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const typeFilter = document.getElementById("typeFilter");
+    const textFilter = document.getElementById("textFilter");
+    const cards = Array.from(document.querySelectorAll(".scenario-card"));
+    const expandAllBtn = document.getElementById("expandAll");
+    const collapseAllBtn = document.getElementById("collapseAll");
 
-                container.innerHTML = '';
-                container.appendChild(clone);
-                lucide.createIcons();
-            },
+    function applyFilters() {
+      const typeValue = typeFilter.value;
+      const searchValue = textFilter.value.trim().toLowerCase();
 
-            renderScenario() {
-                const scenario = this.state.activeScenario;
-                const container = document.getElementById('app-container');
-                const template = document.getElementById('scenario-template');
-                const clone = template.content.cloneNode(true);
+      cards.forEach(card => {
+        const matchType =
+          typeValue === "all" || card.dataset.type === typeValue;
 
-                clone.getElementById('scenario-title').textContent = scenario.title;
-                
-                // Stakeholder badges
-                const shContainer = clone.getElementById('scenario-stakeholders');
-                scenario.stakeholders.forEach(sh => {
-                    const span = document.createElement('span');
-                    span.className = "px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-white/20 text-white backdrop-blur-sm";
-                    span.textContent = sh;
-                    shContainer.appendChild(span);
-                });
+        const textContent = card.textContent.toLowerCase();
+        const matchSearch =
+          !searchValue || textContent.includes(searchValue);
 
-                // Steps
-                const stepsContainer = clone.getElementById('steps-container');
-                scenario.steps.forEach(step => {
-                    const stepDiv = document.createElement('div');
-                    
-                    if (step.type === 'checkpoint') {
-                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
-                        stepDiv.innerHTML = `
-                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
-                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center ring-4 ring-white">
-                                <i data-lucide="shield-check" class="w-3 h-3 text-white"></i>
-                            </div>
-                            <div class="bg-red-50 border border-red-100 rounded-lg p-4 shadow-sm">
-                                <h4 class="text-red-800 font-bold flex items-center">
-                                    <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
-                                    ${step.title}
-                                </h4>
-                                <p class="text-red-700 text-sm mt-1 font-medium">
-                                    Responsible: ${step.owner}
-                                </p>
-                                <p class="text-red-600 text-sm mt-1">${step.desc}</p>
-                            </div>
-                        `;
-                    } else {
-                        const roleIcon = this.getRoleIcon(step.owner);
-                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
-                        stepDiv.innerHTML = `
-                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
-                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center ring-4 ring-white">
-                                <span class="text-[10px] text-white font-bold">${step.step}</span>
-                            </div>
+        card.style.display = matchType && matchSearch ? "" : "none";
+      });
+    }
 
-                            <div class="bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
-                                    <h3 class="font-bold text-gray-800 text-base">${step.action}</h3>
-                                    <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-blue-50 text-blue-700 border border-blue-100 flex items-center">
-                                         <i data-lucide="${roleIcon}" class="w-4 h-4 mr-1"></i> ${step.owner}
-                                    </span>
-                                </div>
+    typeFilter.addEventListener("change", applyFilters);
+    textFilter.addEventListener("input", applyFilters);
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i data-lucide="clock" class="w-4 h-4 mr-2 text-gray-400"></i>
-                                        <span>${step.timing}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i data-lucide="file-text" class="w-4 h-4 mr-2 text-gray-400"></i>
-                                        <span class="font-medium text-gray-700">${step.doc || 'N/A'}</span>
-                                    </div>
-                                </div>
+    const toggles = document.querySelectorAll(".scenario-toggle");
 
-                                ${step.details ? `
-                                    <div class="mt-3 pt-3 border-t border-gray-50 text-sm text-gray-600 bg-gray-50/50 p-2 rounded">
-                                        <span class="font-semibold text-gray-700">Details:</span> ${step.details}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    }
-                    stepsContainer.appendChild(stepDiv);
-                });
+    toggles.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const controlsId = btn.getAttribute("aria-controls");
+        const body = document.getElementById(controlsId);
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!expanded));
+        body.hidden = expanded;
 
-                container.innerHTML = '';
-                container.appendChild(clone);
-                lucide.createIcons();
-            }
-        };
+        const chevron = btn.querySelector(".chevron");
+        if (chevron) {
+          chevron.textContent = expanded ? "▹" : "▿";
+        }
+      });
+    });
 
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            app.init();
-        });
-    </script>
+    expandAllBtn.addEventListener("click", () => {
+      cards.forEach(card => {
+        if (card.style.display === "none") return;
+        const btn = card.querySelector(".scenario-toggle");
+        const body = document.getElementById(
+          btn.getAttribute("aria-controls")
+        );
+        btn.setAttribute("aria-expanded", "true");
+        body.hidden = false;
+        const chevron = btn.querySelector(".chevron");
+        if (chevron) chevron.textContent = "▿";
+      });
+    });
+
+    collapseAllBtn.addEventListener("click", () => {
+      cards.forEach(card => {
+        if (card.style.display === "none") return;
+        const btn = card.querySelector(".scenario-toggle");
+        const body = document.getElementById(
+          btn.getAttribute("aria-controls")
+        );
+        btn.setAttribute("aria-expanded", "false");
+        body.hidden = true;
+        const chevron = btn.querySelector(".chevron");
+        if (chevron) chevron.textContent = "▹";
+      });
+    });
+  });
+</script>
 </body>
 </html>
