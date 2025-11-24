@@ -14,7 +14,7 @@
         }
 
         .animate-fadeIn {
-            animation: fadeIn 0.3s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         @keyframes fadeIn {
@@ -22,7 +22,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Custom Scrollbar for modal */
+        /* Smooth transitions for filtering */
+        .step-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .step-dimmed {
+            opacity: 0.3;
+            transform: scale(0.98);
+            filter: grayscale(100%);
+        }
+
+        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
@@ -30,97 +40,101 @@
             background: #f1f1f1;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d1d5db;
+            background: #cbd5e1;
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
+            background: #94a3b8;
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-900 pb-20 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-900 pb-20 min-h-screen flex flex-col">
 
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-200">
+    <nav class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center cursor-pointer" onclick="app.goHome()">
-                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3 text-white font-bold text-sm">D</div>
-                <h1 class="text-xl font-bold text-gray-900 tracking-tight select-none">
-                    Payment <span class="text-red-600">SOP</span> Guide
+            <div class="flex items-center cursor-pointer group" onclick="app.goHome()">
+                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3 text-white font-bold text-sm shadow-sm group-hover:bg-red-700 transition-colors">D</div>
+                <h1 class="text-lg font-bold text-slate-900 tracking-tight select-none">
+                    Payment <span class="text-red-600">SOP</span>
                 </h1>
             </div>
-            <button onclick="app.toggleGlossary(true)" class="text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-50 transition-colors" title="Glossary">
-                <i data-lucide="book-open" class="w-5 h-5"></i>
+            <button onclick="app.toggleGlossary(true)" class="flex items-center text-slate-500 hover:text-blue-600 px-3 py-1.5 rounded-full hover:bg-slate-50 transition-colors text-sm font-medium border border-transparent hover:border-slate-200">
+                <i data-lucide="book-open" class="w-4 h-4 mr-2"></i> Glossary
             </button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
         
-        <!-- Critical Info Banner -->
-        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 flex items-start gap-3 shadow-sm">
-            <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
-            <div class="text-sm text-amber-800">
-                <p class="font-semibold">Important Policy:</p>
-                <p>If a payment is marked as "Verified" but the seller hasn't received it after 24 hours, contact Finance immediately. Payments must be resubmitted after issues are resolved.</p>
-            </div>
-        </div>
-
-        <!-- App Container where views will be injected -->
+        <!-- App Container -->
         <div id="app-container"></div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-gray-400 text-xs py-8 mt-auto border-t border-gray-200 bg-white">
+    <footer class="text-center text-slate-400 text-xs py-8 mt-auto border-t border-slate-200 bg-white">
         <p>© Dubizzle Cars • Internal Training Document</p>
     </footer>
 
     <!-- Glossary Modal -->
-    <div id="glossary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+    <div id="glossary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300" id="glossary-content">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 class="text-xl font-bold text-gray-800 flex items-center">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center">
                     <i data-lucide="book-open" class="w-5 h-5 mr-2 text-blue-600"></i> Glossary
                 </h3>
-                <button onclick="app.toggleGlossary(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none">
-                    <i data-lucide="x" class="w-6 h-6"></i>
+                <button onclick="app.toggleGlossary(false)" class="text-slate-400 hover:text-slate-600 focus:outline-none bg-white p-1 rounded-full hover:bg-slate-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <div class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" id="glossary-list">
                 <!-- Glossary items injected here -->
             </div>
-            <div class="p-4 bg-gray-50 text-center border-t border-gray-100">
-                <button onclick="app.toggleGlossary(false)" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold shadow-md hover:shadow-lg">
-                    Close Guide
+            <div class="p-4 bg-slate-50 text-center border-t border-slate-100">
+                <button onclick="app.toggleGlossary(false)" class="bg-white border border-slate-300 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-50 transition-colors text-sm font-semibold shadow-sm">
+                    Close
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Templates hidden from view -->
+    <!-- TEMPLATES -->
+
+    <!-- Home Template -->
     <template id="home-template">
         <div class="animate-fadeIn">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Select a Service Type</h2>
-                <p class="text-lg text-gray-500">Choose the deal type to view specific payment checklists and responsibilities.</p>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">Select Service Type</h2>
+                <p class="text-lg text-slate-500 max-w-2xl mx-auto">Choose the deal type to view specific payment checklists, document requirements, and responsibilities.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="category-grid">
+            
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-10 flex items-start gap-4 shadow-sm max-w-2xl mx-auto">
+                <div class="bg-amber-100 p-2 rounded-full">
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-amber-700"></i>
+                </div>
+                <div class="text-sm text-amber-900 leading-relaxed">
+                    <p class="font-bold mb-1">Critical Payment Policy</p>
+                    <p>If a payment is marked as "Verified" but the seller hasn't received it after 24 hours, contact Finance immediately. Payments must be resubmitted after issues are resolved.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="category-grid">
                 <!-- Category Cards injected here -->
             </div>
         </div>
     </template>
 
+    <!-- Category Template -->
     <template id="category-template">
         <div class="animate-fadeIn">
-            <button onclick="app.goHome()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
-                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Categories
-            </button>
-            
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center" id="cat-header">
-                <!-- Header injected here -->
-            </h2>
+            <div class="flex items-center justify-between mb-8">
+                <button onclick="app.goHome()" class="flex items-center text-slate-500 hover:text-blue-600 transition-colors font-medium group px-4 py-2 hover:bg-white rounded-lg">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i> Back
+                </button>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center" id="cat-header"></h2>
+            </div>
 
             <div class="grid grid-cols-1 gap-4" id="scenario-list">
                 <!-- Scenario buttons injected here -->
@@ -128,23 +142,49 @@
         </div>
     </template>
 
+    <!-- Scenario Template -->
     <template id="scenario-template">
-        <div class="animate-fadeIn">
-            <button onclick="app.goBackToCategory()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
-                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Scenarios
-            </button>
+        <div class="animate-fadeIn pb-10">
+            <!-- Header Nav -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                <button onclick="app.goBackToCategory()" class="flex items-center text-slate-500 hover:text-blue-600 transition-colors font-medium group w-fit">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform"></i> Back to Scenarios
+                </button>
+                
+                <!-- Role Filter Dropdown -->
+                <div class="relative group">
+                    <div class="flex items-center bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
+                        <i data-lucide="filter" class="w-4 h-4 text-slate-400 mr-2"></i>
+                        <span class="text-xs font-semibold text-slate-500 mr-2 uppercase tracking-wide">Highlight Role:</span>
+                        <select id="role-filter" onchange="app.filterByRole(this.value)" class="bg-transparent text-sm font-semibold text-slate-800 focus:outline-none cursor-pointer w-40">
+                            <option value="all">Show All Steps</option>
+                            <!-- Options injected dynamically -->
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-gray-100">
-                <div class="p-6 bg-gradient-to-r from-slate-800 to-slate-900 text-white">
-                    <h2 class="text-2xl font-bold" id="scenario-title"></h2>
+            <!-- Title & Summary Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+                <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                    <h2 class="text-2xl font-bold text-slate-900" id="scenario-title"></h2>
                     <div class="flex flex-wrap gap-2 mt-3" id="scenario-stakeholders"></div>
                 </div>
                 
-                <div class="p-6 bg-gray-50">
-                    <div class="max-w-3xl mx-auto" id="steps-container">
-                        <!-- Steps injected here -->
+                <!-- Quick Docs Summary -->
+                <div class="p-6 bg-blue-50/30">
+                    <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wide mb-3 flex items-center">
+                        <i data-lucide="files" class="w-4 h-4 mr-2"></i> Required Documents
+                    </h3>
+                    <div class="flex flex-wrap gap-2" id="docs-summary">
+                        <!-- Doc badges injected here -->
                     </div>
                 </div>
+            </div>
+
+            <!-- Steps Container (Phased) -->
+            <div class="space-y-8" id="steps-container">
+                <!-- Steps injected here -->
             </div>
         </div>
     </template>
@@ -171,16 +211,18 @@
                 title: 'Managed Deals',
                 iconName: 'car',
                 color: 'bg-blue-600',
+                lightColor: 'bg-blue-50',
                 textColor: 'text-blue-600',
-                description: 'Processes for Seller Assist & Buyer Assist services'
+                description: 'For Seller Assist & Buyer Assist services'
             },
             {
                 id: 'auction',
                 title: 'Auction Deals',
                 iconName: 'gavel',
                 color: 'bg-orange-600',
+                lightColor: 'bg-orange-50',
                 textColor: 'text-orange-600',
-                description: 'Processes for B2B Auction transactions'
+                description: 'For B2B Auction transactions'
             }
         ];
 
@@ -311,9 +353,10 @@
 
         const app = {
             state: {
-                view: 'home', // home, category, scenario
+                view: 'home',
                 activeCategory: null,
-                activeScenario: null
+                activeScenario: null,
+                currentRoleFilter: 'all'
             },
 
             init() {
@@ -327,6 +370,7 @@
                 this.state.view = 'home';
                 this.state.activeCategory = null;
                 this.state.activeScenario = null;
+                this.state.currentRoleFilter = 'all';
                 this.renderHome();
             },
 
@@ -339,6 +383,7 @@
             goScenario(scenario) {
                 this.state.view = 'scenario';
                 this.state.activeScenario = scenario;
+                this.state.currentRoleFilter = 'all';
                 this.renderScenario();
             },
 
@@ -350,12 +395,13 @@
                 }
             },
 
+            // -- Features --
+
             toggleGlossary(show) {
                 const modal = document.getElementById('glossary-modal');
                 const content = document.getElementById('glossary-content');
                 if (show) {
                     modal.classList.remove('hidden');
-                    // Small delay to allow removing hidden before adding opacity
                     setTimeout(() => {
                         modal.classList.remove('opacity-0');
                         content.classList.remove('scale-95');
@@ -369,6 +415,35 @@
                         modal.classList.add('hidden');
                     }, 300);
                 }
+            },
+
+            filterByRole(role) {
+                this.state.currentRoleFilter = role;
+                const steps = document.querySelectorAll('.step-card');
+                
+                steps.forEach(step => {
+                    const owner = step.getAttribute('data-owner');
+                    
+                    if (role === 'all') {
+                        step.classList.remove('step-dimmed');
+                    } else {
+                        // Check if the step owner includes the selected role (case insensitive)
+                        // Simple inclusion check: does "FSR" contain "FSR"? Yes.
+                        // Does "CSR / Purchaser" contain "Purchaser"? Yes.
+                        const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+                        const stepRoles = owner.split('/').map(s => normalize(s));
+                        const selectedRole = normalize(role);
+                        
+                        // Check if any of the step's roles match the selection
+                        const isMatch = stepRoles.some(r => r.includes(selectedRole) || selectedRole.includes(r));
+                        
+                        if (isMatch) {
+                            step.classList.remove('step-dimmed');
+                        } else {
+                            step.classList.add('step-dimmed');
+                        }
+                    }
+                });
             },
 
             // -- Helpers --
@@ -389,10 +464,10 @@
                 list.innerHTML = '';
                 Object.entries(GLOSSARY).forEach(([key, val]) => {
                     const div = document.createElement('div');
-                    div.className = "flex flex-col border-b border-gray-50 pb-2 last:border-0";
+                    div.className = "flex flex-col border-b border-slate-100 pb-3 last:border-0 mb-3 last:mb-0";
                     div.innerHTML = `
-                        <span class="font-bold text-blue-700">${key.replace('_', ' ')}</span>
-                        <span class="text-gray-600 text-sm">${val}</span>
+                        <span class="font-bold text-blue-700 text-sm mb-1">${key.replace('_', ' ')}</span>
+                        <span class="text-slate-600 text-sm leading-snug">${val}</span>
                     `;
                     list.appendChild(div);
                 });
@@ -407,20 +482,24 @@
                 
                 CATEGORIES.forEach(cat => {
                     const btn = document.createElement('button');
-                    btn.className = "group relative overflow-hidden rounded-2xl bg-white shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 text-left w-full";
+                    btn.className = "group relative overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 text-left w-full h-full";
                     btn.onclick = () => this.goCategory(cat.id);
                     
                     btn.innerHTML = `
                         <div class="h-2 w-full ${cat.color}"></div>
-                        <div class="p-8">
-                            <div class="inline-flex p-3 rounded-xl ${cat.color} bg-opacity-10 mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="${cat.iconName}" class="w-8 h-8 ${cat.textColor}"></i>
+                        <div class="p-8 flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="inline-flex p-4 rounded-2xl ${cat.lightColor} group-hover:scale-110 transition-transform duration-300">
+                                    <i data-lucide="${cat.iconName}" class="w-8 h-8 ${cat.textColor}"></i>
+                                </div>
+                                <i data-lucide="chevron-right" class="w-6 h-6 text-slate-300 group-hover:text-slate-600 transition-colors"></i>
                             </div>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-2">${cat.title}</h2>
-                            <p class="text-gray-500">${cat.description}</p>
                             
-                            <div class="mt-6 flex items-center text-sm font-semibold text-gray-600 group-hover:text-gray-900">
-                                View Scenarios <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-2">${cat.title}</h2>
+                            <p class="text-slate-500 text-sm leading-relaxed mb-6">${cat.description}</p>
+                            
+                            <div class="mt-auto pt-4 border-t border-slate-50">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-slate-700 transition-colors">View Processes</span>
                             </div>
                         </div>
                     `;
@@ -443,27 +522,30 @@
 
                 // Header
                 const header = clone.getElementById('cat-header');
-                header.innerHTML = `<span class="w-3 h-8 ${category.color} mr-3 rounded-full"></span> ${category.title} Scenarios`;
+                header.innerHTML = `
+                    <span class="inline-block w-2 h-6 ${category.color} mr-3 rounded-full"></span> 
+                    ${category.title}
+                `;
 
                 // List
                 const list = clone.getElementById('scenario-list');
                 scenarios.forEach(scen => {
                     const btn = document.createElement('button');
-                    btn.className = "bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left flex justify-between items-center group w-full";
-                    // We need to bind the click
-                    btn.addEventListener('click', () => this.goScenario(scen));
+                    btn.className = "bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left flex justify-between items-center group w-full";
+                    btn.onclick = () => this.goScenario(scen);
 
                     btn.innerHTML = `
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                        <div class="flex-1 pr-4">
+                            <h3 class="text-lg font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
                                 ${scen.title}
                             </h3>
-                            <p class="text-sm text-gray-500 mt-1">
-                                ${scen.steps.length} Steps • ${scen.stakeholders.length} Stakeholders
-                            </p>
+                            <div class="flex items-center gap-4 mt-2 text-xs text-slate-500 font-medium">
+                                <span class="flex items-center"><i data-lucide="list" class="w-3 h-3 mr-1"></i> ${scen.steps.length} Steps</span>
+                                <span class="flex items-center"><i data-lucide="users" class="w-3 h-3 mr-1"></i> ${scen.stakeholders.length} Stakeholders</span>
+                            </div>
                         </div>
-                        <div class="bg-gray-50 p-2 rounded-full group-hover:bg-blue-50 transition-colors">
-                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-500"></i>
+                        <div class="bg-slate-50 p-2 rounded-full group-hover:bg-blue-50 transition-colors">
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-blue-500"></i>
                         </div>
                     `;
                     list.appendChild(btn);
@@ -482,75 +564,157 @@
 
                 clone.getElementById('scenario-title').textContent = scenario.title;
                 
-                // Stakeholder badges
+                // 1. Populate Stakeholders for header & filter
                 const shContainer = clone.getElementById('scenario-stakeholders');
+                const filterSelect = clone.getElementById('role-filter');
+                const uniqueRoles = new Set(); // To avoid duplicates in filter
+
                 scenario.stakeholders.forEach(sh => {
+                    // Badge in header
                     const span = document.createElement('span');
-                    span.className = "px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-white/20 text-white backdrop-blur-sm";
+                    span.className = "px-2.5 py-1 rounded-md text-xs font-bold tracking-wide bg-slate-100 text-slate-600 border border-slate-200";
                     span.textContent = sh;
                     shContainer.appendChild(span);
+
+                    // Add to filter set
+                    uniqueRoles.add(sh);
                 });
 
-                // Steps
+                // Add Finance/DRE manually if missing but present in owner
+                 scenario.steps.forEach(s => {
+                     if(s.owner && !s.type) { // if not checkpoint
+                        s.owner.split('/').forEach(part => uniqueRoles.add(part.trim()));
+                     }
+                 });
+
+                // Populate Filter Dropdown
+                Array.from(uniqueRoles).sort().forEach(role => {
+                    const opt = document.createElement('option');
+                    opt.value = role;
+                    opt.textContent = role;
+                    filterSelect.appendChild(opt);
+                });
+
+
+                // 2. Extract Docs for Summary Box
+                const docsContainer = clone.getElementById('docs-summary');
+                const docsSet = new Set();
+                scenario.steps.forEach(s => {
+                    if (s.doc) docsSet.add(s.doc);
+                });
+
+                if (docsSet.size === 0) {
+                    docsContainer.innerHTML = '<span class="text-sm text-slate-400 italic">No specific documents listed.</span>';
+                } else {
+                    docsSet.forEach(doc => {
+                        const d = document.createElement('div');
+                        d.className = "inline-flex items-center px-3 py-1 bg-white border border-blue-100 rounded-full shadow-sm text-xs font-medium text-blue-700";
+                        d.innerHTML = `<i data-lucide="file" class="w-3 h-3 mr-1.5 opacity-60"></i> ${doc}`;
+                        docsContainer.appendChild(d);
+                    });
+                }
+
+                // 3. Render Steps (Grouped by Phases)
                 const stepsContainer = clone.getElementById('steps-container');
+                let currentPhaseIndex = 1;
+
+                // Group steps: Array of arrays. Break on checkpoint.
+                let phases = [];
+                let currentBatch = [];
+                
                 scenario.steps.forEach(step => {
-                    const stepDiv = document.createElement('div');
-                    
                     if (step.type === 'checkpoint') {
-                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
-                        stepDiv.innerHTML = `
-                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
-                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center ring-4 ring-white">
-                                <i data-lucide="shield-check" class="w-3 h-3 text-white"></i>
-                            </div>
-                            <div class="bg-red-50 border border-red-100 rounded-lg p-4 shadow-sm">
-                                <h4 class="text-red-800 font-bold flex items-center">
-                                    <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
-                                    ${step.title}
-                                </h4>
-                                <p class="text-red-700 text-sm mt-1 font-medium">
-                                    Responsible: ${step.owner}
-                                </p>
-                                <p class="text-red-600 text-sm mt-1">${step.desc}</p>
-                            </div>
-                        `;
+                        // Push current batch if exists
+                        if (currentBatch.length > 0) {
+                            phases.push({ type: 'steps', data: currentBatch });
+                            currentBatch = [];
+                        }
+                        // Push checkpoint
+                        phases.push({ type: 'checkpoint', data: step });
                     } else {
-                        const roleIcon = this.getRoleIcon(step.owner);
-                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
-                        stepDiv.innerHTML = `
-                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
-                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center ring-4 ring-white">
-                                <span class="text-[10px] text-white font-bold">${step.step}</span>
+                        currentBatch.push(step);
+                    }
+                });
+                if (currentBatch.length > 0) phases.push({ type: 'steps', data: currentBatch });
+
+
+                // Render the groups
+                phases.forEach((group, index) => {
+                    if (group.type === 'checkpoint') {
+                        const step = group.data;
+                        const div = document.createElement('div');
+                        div.className = "step-card bg-red-50 border border-red-100 rounded-xl p-5 shadow-sm flex items-start gap-4";
+                        div.setAttribute('data-owner', step.owner); // For filtering
+                        div.innerHTML = `
+                            <div class="mt-1 bg-red-100 p-2 rounded-full flex-shrink-0">
+                                <i data-lucide="shield-check" class="w-5 h-5 text-red-600"></i>
                             </div>
-
-                            <div class="bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
-                                    <h3 class="font-bold text-gray-800 text-base">${step.action}</h3>
-                                    <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-blue-50 text-blue-700 border border-blue-100 flex items-center">
-                                         <i data-lucide="${roleIcon}" class="w-4 h-4 mr-1"></i> ${step.owner}
-                                    </span>
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i data-lucide="clock" class="w-4 h-4 mr-2 text-gray-400"></i>
-                                        <span>${step.timing}</span>
-                                    </div>
-                                    <div class="flex items-center text-sm text-gray-600">
-                                        <i data-lucide="file-text" class="w-4 h-4 mr-2 text-gray-400"></i>
-                                        <span class="font-medium text-gray-700">${step.doc || 'N/A'}</span>
-                                    </div>
-                                </div>
-
-                                ${step.details ? `
-                                    <div class="mt-3 pt-3 border-t border-gray-50 text-sm text-gray-600 bg-gray-50/50 p-2 rounded">
-                                        <span class="font-semibold text-gray-700">Details:</span> ${step.details}
-                                    </div>
-                                ` : ''}
+                            <div>
+                                <h4 class="text-red-900 font-bold text-lg">${step.title}</h4>
+                                <p class="text-red-800 text-sm mt-1 font-medium uppercase tracking-wide text-xs">Gatekeeper: ${step.owner}</p>
+                                <p class="text-red-700 text-sm mt-2 leading-relaxed">${step.desc}</p>
                             </div>
                         `;
+                        stepsContainer.appendChild(div);
+                    } 
+                    else {
+                        // It's a list of normal steps (A Phase)
+                        const phaseWrapper = document.createElement('div');
+                        phaseWrapper.className = "space-y-4";
+                        
+                        // Phase Header (Optional, but helps structure)
+                        // Heuristic: If it's the first group, it's "Initiation". If after checkpoint, "Execution".
+                        // let phaseTitle = index === 0 ? "Phase 1: Initiation & Documentation" : `Phase ${Math.ceil(index/2) + 1}: Processing`;
+                        // const header = document.createElement('h3');
+                        // header.className = "text-xs font-bold text-slate-400 uppercase tracking-widest pl-2 mb-2";
+                        // header.innerText = phaseTitle;
+                        // phaseWrapper.appendChild(header);
+
+                        group.data.forEach(step => {
+                            const roleIcon = this.getRoleIcon(step.owner);
+                            const card = document.createElement('div');
+                            card.className = "step-card bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:border-blue-300 transition-all flex flex-col sm:flex-row gap-5";
+                            card.setAttribute('data-owner', step.owner);
+                            
+                            card.innerHTML = `
+                                <div class="flex-shrink-0 flex items-center gap-3 sm:block sm:w-16 sm:text-center">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm mx-auto">
+                                        ${step.step}
+                                    </div>
+                                    <div class="sm:hidden font-bold text-slate-900 text-sm">Step ${step.step}</div>
+                                </div>
+                                
+                                <div class="flex-grow">
+                                    <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                                        <h3 class="font-bold text-slate-800 text-base">${step.action}</h3>
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-slate-100 text-slate-600">
+                                             <i data-lucide="${roleIcon}" class="w-3 h-3 mr-1.5"></i> ${step.owner}
+                                        </span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                        <div class="flex items-center text-sm text-slate-500">
+                                            <i data-lucide="clock" class="w-4 h-4 mr-2 text-slate-300"></i>
+                                            <span>${step.timing}</span>
+                                        </div>
+                                        ${step.doc ? `
+                                        <div class="flex items-center text-sm text-slate-500">
+                                            <i data-lucide="file-text" class="w-4 h-4 mr-2 text-slate-300"></i>
+                                            <span class="font-medium text-slate-700">${step.doc}</span>
+                                        </div>` : ''}
+                                    </div>
+
+                                    ${step.details ? `
+                                        <div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                            ${step.details}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                            phaseWrapper.appendChild(card);
+                        });
+                        stepsContainer.appendChild(phaseWrapper);
                     }
-                    stepsContainer.appendChild(stepDiv);
                 });
 
                 container.innerHTML = '';
