@@ -1,840 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dubizzle Cars . Payment Guide</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg-page: #f4f5f7;
-      --bg-surface: #ffffff;
-      --bg-active: #e0f2fe;
-      --border-subtle: #e5e7eb;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --accent: #2563eb;
-      --radius-card: 16px;
-      --shadow-card: 0 8px 16px rgba(15, 23, 42, 0.08);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubizzle Cars Payment SOP Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
-      line-height: 1.5;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .page {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 16px 14px 28px;
-    }
-
-    header {
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      margin: 0 0 6px;
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      max-width: 720px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    @media (max-width: 768px) {
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* Left column . scenario selector */
-
-    .sidebar {
-      background: var(--bg-surface);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-card);
-      padding: 10px;
-    }
-
-    .sidebar-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .chip {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #4338ca;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .filter-row {
-      margin-bottom: 8px;
-    }
-
-    .filter-row label {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-
-    select {
-      width: 100%;
-      padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle);
-      font-size: 0.86rem;
-      background: #f9fafb;
-    }
-
-    select:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 1px;
-    }
-
-    .scenario-list {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .scenario-button {
-      width: 100%;
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 7px 8px;
-      background: #f9fafb;
-      cursor: pointer;
-      text-align: left;
-      font-size: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .scenario-button:hover {
-      background: #f3f4ff;
-    }
-
-    .scenario-button:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 1px;
-    }
-
-    .scenario-button[aria-pressed="true"] {
-      background: var(--bg-active);
-      border-color: var(--accent);
-    }
-
-    .scenario-name {
-      font-weight: 600;
-    }
-
-    .scenario-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* Right column . scenario content */
-
-    .content {
-      background: var(--bg-surface);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-card);
-      padding: 12px 12px 14px;
-      min-height: 260px;
-    }
-
-    .content-header {
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 8px;
-      margin-bottom: 8px;
-    }
-
-    .content-tagline {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .content-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .content-subtitle {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 10px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 800px) {
-      .content-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .info-card {
-      border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      padding: 7px 9px;
-      font-size: 0.8rem;
-    }
-
-    .info-title {
-      font-size: 0.78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-
-    .info-body {
-      font-size: 0.8rem;
-      color: var(--text-main);
-    }
-
-    .pill-inline {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #e5f3ff;
-      font-size: 0.72rem;
-      margin: 1px 2px 1px 0;
-    }
-
-    .pill-warning {
-      background: #fef3c7;
-    }
-
-    /* Stepper */
-
-    .stepper-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-      margin-top: 4px;
-    }
-
-    .stepper-title {
-      font-size: 0.86rem;
-      font-weight: 600;
-    }
-
-    .stepper-buttons {
-      display: flex;
-      gap: 4px;
-    }
-
-    .stepper-btn {
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      background: #f9fafb;
-      font-size: 0.78rem;
-      padding: 3px 8px;
-      cursor: pointer;
-    }
-
-    .stepper-btn:hover {
-      background: #eef2ff;
-    }
-
-    .stepper-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 1px;
-    }
-
-    .steps {
-      border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      padding: 7px 9px;
-      max-height: 220px;
-      overflow-y: auto;
-      background: #f9fafb;
-    }
-
-    .step {
-      padding: 5px 6px;
-      border-radius: 8px;
-      margin-bottom: 4px;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-
-    .step:hover {
-      background: #e5f0ff;
-    }
-
-    .step.active {
-      background: var(--bg-active);
-      border-left: 3px solid var(--accent);
-    }
-
-    .step-title {
-      font-weight: 600;
-    }
-
-    .step-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .step-note {
-      font-size: 0.75rem;
-      color: var(--text-main);
-      margin-top: 2px;
-    }
-
-    /* Footer */
-
-    .footer-note {
-      margin-top: 10px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 6px;
-    }
-  </style>
+        /* Custom Scrollbar for modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
 </head>
-<body>
-<div class="page">
-  <header>
-    <h1>Dubizzle Cars . Payment Process Guide</h1>
-    <p class="subtitle">
-      Pick the scenario. See who does what, when, and which documents are required before payment is released.
-      This is a quick reference for daily operations and onboarding.
-    </p>
-  </header>
+<body class="bg-gray-100 text-gray-900 pb-20 min-h-screen flex flex-col">
 
-  <div class="layout">
-    <!-- LEFT . SCENARIO SELECTOR -->
-    <aside class="sidebar" aria-label="Scenarios">
-      <div class="sidebar-title">1 . Choose a scenario</div>
-
-      <div class="chip-row" aria-hidden="true">
-        <span class="chip">Managed</span>
-        <span class="chip">Auction</span>
-        <span class="chip">POA</span>
-        <span class="chip">Company</span>
-      </div>
-
-      <div class="filter-row">
-        <label for="dealFilter">Deal type</label>
-        <select id="dealFilter">
-          <option value="all">All deals</option>
-          <option value="managed">Managed only</option>
-          <option value="auction">Auction only</option>
-        </select>
-      </div>
-
-      <ul class="scenario-list" id="scenarioList">
-        <!-- Buttons are generated by JS -->
-      </ul>
-    </aside>
-
-    <!-- RIGHT . CONTENT -->
-    <section class="content" aria-live="polite" aria-atomic="true">
-      <div class="content-header">
-        <div class="content-tagline" id="scenarioTagline">Select a scenario to begin</div>
-        <div class="content-title" id="scenarioTitle">No scenario selected</div>
-        <div class="content-subtitle" id="scenarioSubtitle">
-          Use the list on the left to pick a managed or auction payment flow.
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center cursor-pointer" onclick="app.goHome()">
+                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3 text-white font-bold text-sm">D</div>
+                <h1 class="text-xl font-bold text-gray-900 tracking-tight select-none">
+                    Payment <span class="text-red-600">SOP</span> Guide
+                </h1>
+            </div>
+            <button onclick="app.toggleGlossary(true)" class="text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-50 transition-colors" title="Glossary">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+            </button>
         </div>
-      </div>
+    </nav>
 
-      <div class="content-grid" aria-label="Key information">
-        <div class="info-card">
-          <div class="info-title">People involved</div>
-          <div class="info-body" id="peopleBox">
-            CSR, FSR, Transfer Agent, BO Team, Finance, Auction TL.  
-            This area will update when you choose a scenario.
-          </div>
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        
+        <!-- Critical Info Banner -->
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 flex items-start gap-3 shadow-sm">
+            <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
+            <div class="text-sm text-amber-800">
+                <p class="font-semibold">Important Policy:</p>
+                <p>If a payment is marked as "Verified" but the seller hasn't received it after 24 hours, contact Finance immediately. Payments must be resubmitted after issues are resolved.</p>
+            </div>
         </div>
-        <div class="info-card">
-          <div class="info-title">Timing</div>
-          <div class="info-body" id="timingBox">
-            Before listing, before transfer, after transfer.  
-            Use this to check where you are in the flow.
-          </div>
+
+        <!-- App Container where views will be injected -->
+        <div id="app-container"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-gray-400 text-xs py-8 mt-auto border-t border-gray-200 bg-white">
+        <p>© Dubizzle Cars • Internal Training Document</p>
+    </footer>
+
+    <!-- Glossary Modal -->
+    <div id="glossary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300" id="glossary-content">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i data-lucide="book-open" class="w-5 h-5 mr-2 text-blue-600"></i> Glossary
+                </h3>
+                <button onclick="app.toggleGlossary(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" id="glossary-list">
+                <!-- Glossary items injected here -->
+            </div>
+            <div class="p-4 bg-gray-50 text-center border-t border-gray-100">
+                <button onclick="app.toggleGlossary(false)" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold shadow-md hover:shadow-lg">
+                    Close Guide
+                </button>
+            </div>
         </div>
-        <div class="info-card">
-          <div class="info-title">Payment can be released when</div>
-          <div class="info-body" id="paymentBox">
-            This box will clearly state the condition for releasing payment to the seller.
-          </div>
+    </div>
+
+    <!-- Templates hidden from view -->
+    <template id="home-template">
+        <div class="animate-fadeIn">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-3">Select a Service Type</h2>
+                <p class="text-lg text-gray-500">Choose the deal type to view specific payment checklists and responsibilities.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="category-grid">
+                <!-- Category Cards injected here -->
+            </div>
         </div>
-      </div>
+    </template>
 
-      <div class="stepper-header">
-        <div class="stepper-title">Step by step checklist</div>
-        <div class="stepper-buttons">
-          <button class="stepper-btn" type="button" id="prevStepBtn">Previous step</button>
-          <button class="stepper-btn" type="button" id="nextStepBtn">Next step</button>
+    <template id="category-template">
+        <div class="animate-fadeIn">
+            <button onclick="app.goHome()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Categories
+            </button>
+            
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center" id="cat-header">
+                <!-- Header injected here -->
+            </h2>
+
+            <div class="grid grid-cols-1 gap-4" id="scenario-list">
+                <!-- Scenario buttons injected here -->
+            </div>
         </div>
-      </div>
+    </template>
 
-      <div class="steps" id="stepsContainer" aria-label="Checklist steps">
-        <!-- Steps are injected here -->
-        <div class="step">
-          <div class="step-title">No steps to display</div>
-          <div class="step-meta">Choose a scenario to see its checklist.</div>
+    <template id="scenario-template">
+        <div class="animate-fadeIn">
+            <button onclick="app.goBackToCategory()" class="flex items-center text-gray-500 hover:text-blue-600 mb-6 transition-colors font-medium group">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"></i> Back to Scenarios
+            </button>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-gray-100">
+                <div class="p-6 bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+                    <h2 class="text-2xl font-bold" id="scenario-title"></h2>
+                    <div class="flex flex-wrap gap-2 mt-3" id="scenario-stakeholders"></div>
+                </div>
+                
+                <div class="p-6 bg-gray-50">
+                    <div class="max-w-3xl mx-auto" id="steps-container">
+                        <!-- Steps injected here -->
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </template>
 
-      <div class="footer-note" id="footerNote">
-        For payment status questions, refer to CRM and seller email first.  
-        If payment is verified and not received after 24 hours, escalate to Finance.
-      </div>
-    </section>
-  </div>
-</div>
+    <script>
+        // --- DATA ---
+        const GLOSSARY = {
+            SAA: "Seller Assist Agreement (Managed)",
+            BAA: "Buyer Assist Agreement (Managed)",
+            TA_Form: "Transfer Agreement Form (Managed)",
+            POA: "Power of Attorney",
+            VSA: "Vehicle Sales Agreement (Auction)",
+            CSR: "Customer Service Representative",
+            FSR: "Field Sales Representative",
+            TA: "Transfer Agent",
+            DRE: "Dealer Relations Executive",
+            BO: "Back Office",
+            PMS: "Profit Margin Scheme"
+        };
 
-<script>
-  const flows = [
-    {
-      id: "managed-ind-ind",
-      dealType: "managed",
-      label: "Managed . Individual seller to individual buyer",
-      shortMeta: "Standard managed deal, no POA.",
-      tagline: "Managed deal",
-      title: "Seller individual . buyer individual",
-      subtitle: "Standard managed deal for individual to individual transfer with no POA.",
-      people: [
-        "CSR or Purchaser at check in",
-        "FSR after buyer deposit and payment",
-        "Transfer Agent at RTA",
-        "BO Team in CRM",
-        "Finance for payment verification"
-      ],
-      timing: [
-        "Before listing . SAA is signed by the seller, details match Mulkiya.",
-        "Before transfer . FSR has full buyer payment and documents.",
-        "After transfer . Transfer Agent shares buyer Mulkiya and CRM is updated."
-      ],
-      paymentCondition:
-        "Transfer Agent confirms transfer is completed, CRM is updated with correct seller and buyer details, and Finance has verified full buyer payment.",
-      steps: [
-        {
-          title: "Collect seller Emirates ID and Mulkiya",
-          meta: "Done at check in by CSR or Purchaser.",
-          note: "Names should match exactly across Emirates ID and registration card."
-        },
-        {
-          title: "Generate and sign SAA",
-          meta: "Prepared before listing by Purchaser or call center.",
-          note: "Seller name and signature must match Mulkiya."
-        },
-        {
-          title: "Collect buyer deposit and full payment",
-          meta: "Handled by FSR.",
-          note: "Finance must confirm that full payment has been received before transfer."
-        },
-        {
-          title: "Sign BAA with buyer",
-          meta: "Issued by FSR after deposit.",
-          note: "Buyer name must match the new Mulkiya."
-        },
-        {
-          title: "Prepare Transfer Agreement",
-          meta: "Transfer Agent before RTA visit.",
-          note: "If beneficiary is different from seller, collect Emirates ID or trade license for that account."
-        },
-        {
-          title: "Complete transfer and update Mulkiya or Hayaza",
-          meta: "Transfer Agent at RTA.",
-          note: "Buyer Mulkiya or possession certificate is saved and shared with BO Team."
-        },
-        {
-          title: "Update CRM and request payment",
-          meta: "BO Team and Transfer Agent.",
-          note: "Mark sold, confirm seller and buyer names, selling price, and fees. Only then request seller payment."
-        }
-      ],
-      footer:
-        "FSR checks steps 1 to 4 before booking the transfer. Transfer Agent checks steps 5 to 7 before asking Finance to release payment."
-    },
-    {
-      id: "managed-poa",
-      dealType: "managed",
-      label: "Managed . Individual seller with POA",
-      shortMeta: "Individual seller represented by POA.",
-      tagline: "Managed deal",
-      title: "Seller individual with POA . buyer individual",
-      subtitle: "Seller is an individual, transaction handled through a power of attorney.",
-      people: [
-        "CSR or Purchaser at check in",
-        "Transfer Agent validating POA and representative ID",
-        "FSR for buyer payment and BAA",
-        "BO Team and Finance"
-      ],
-      timing: [
-        "At check in . Seller ID and Mulkiya collected.",
-        "At transfer . POA and representative ID checked by Transfer Agent.",
-        "After transfer . Buyer Mulkiya and CRM updated."
-      ],
-      paymentCondition:
-        "POA is valid, representative ID matches POA, transfer is complete, CRM updated correctly, and Finance has verified full buyer payment.",
-      steps: [
-        {
-          title: "Collect seller Emirates ID and Mulkiya",
-          meta: "CSR or Purchaser at check in.",
-          note: "These still belong to the named seller, even if a representative will sign later."
-        },
-        {
-          title: "Check and collect POA",
-          meta: "Transfer Agent at transfer stage.",
-          note: "POA must clearly authorize the representative to sell the vehicle."
-        },
-        {
-          title: "Collect representative Emirates ID",
-          meta: "Transfer Agent at transfer stage.",
-          note: "Name must match the POA document."
-        },
-        {
-          title: "Generate and sign SAA",
-          meta: "Purchaser or call center before listing.",
-          note: "Signed by seller or POA holder with details matching Mulkiya or POA."
-        },
-        {
-          title: "Collect buyer payment and issue BAA",
-          meta: "FSR after deposit.",
-          note: "Buyer name must match the new Mulkiya or possession certificate."
-        },
-        {
-          title: "Prepare Transfer Agreement and complete transfer",
-          meta: "Transfer Agent at RTA.",
-          note: "Agreement is signed by the seller or POA holder. Beneficiary account must match supporting documents."
-        },
-        {
-          title: "Update CRM and request payment",
-          meta: "BO Team and Transfer Agent.",
-          note: "Confirm seller and buyer names, prices, and fees are correct, then request payment release."
-        }
-      ],
-      footer:
-        "FSR checks documents and payments before transfer booking. Transfer Agent confirms POA and CRM details are correct before payment request."
-    },
-    {
-      id: "auction-ind",
-      dealType: "auction",
-      label: "Auction . Individual seller, dealer or company buyer",
-      shortMeta: "Standard auction deal, individual seller.",
-      tagline: "Auction deal",
-      title: "Seller individual . buyer dealer or company",
-      subtitle: "Car sold via auction from an individual seller to a dealer or company buyer.",
-      people: [
-        "Purchaser and auction stakeholders for email approval",
-        "CSR at check in",
-        "DRE collecting payment from dealer",
-        "Transfer Agent at RTA",
-        "Auction TL and BO Team in CRM",
-        "Finance to verify dealer payment"
-      ],
-      timing: [
-        "Before auction . Email confirmation and approvals in place.",
-        "After deal finalisation . VSA signed, dealer payment collected.",
-        "After transfer . Buyer Mulkiya and CRM updated."
-      ],
-      paymentCondition:
-        "Auction email approval is available, VSA is signed, dealer payment is fully received, transfer is complete, and CRM is fully updated with VAT, fees, and highest bid details.",
-      steps: [
-        {
-          title: "Get auction email approval",
-          meta: "Purchaser starts email chain with auction stakeholders.",
-          note: "If car is below criteria, higher level approval is required before proceeding."
-        },
-        {
-          title: "Collect seller Emirates ID and Mulkiya",
-          meta: "CSR or Purchaser at check in.",
-          note: "These documents confirm the individual seller and ownership."
-        },
-        {
-          title: "Sign VSA and set beneficiary",
-          meta: "Purchaser after deal finalisation.",
-          note: "If beneficiary is not the seller, collect Emirates ID or trade license for that account."
-        },
-        {
-          title: "Collect full payment from dealer",
-          meta: "DRE collects and Finance verifies.",
-          note: "No transfer booking until payment is confirmed in full."
-        },
-        {
-          title: "Complete transfer and capture buyer Mulkiya or Hayaza",
-          meta: "Transfer Agent at RTA.",
-          note: "New buyer Mulkiya or possession certificate is shared with BO Team."
-        },
-        {
-          title: "Update CRM with prices, VAT, and fees",
-          meta: "BO Team, DRE, Transfer Agent, Auction TL.",
-          note: "Seller name, purchase price, selling price, dealer admin and transfer fees, RTA fees, fines, passing cost, seller deductions, and highest bid must be correct."
-        },
-        {
-          title: "Request seller payment",
-          meta: "Purchaser after CRM check.",
-          note: "Only after all CRM fields and approval email details are confirmed."
-        }
-      ],
-      footer:
-        "Purchaser checks each CRM field and the auction approval email before asking Finance to release the payment to the seller."
-    },
-    {
-      id: "auction-fleet",
-      dealType: "auction",
-      label: "Auction . Company fleet seller",
-      shortMeta: "Fleet sale with proforma invoice.",
-      tagline: "Auction deal",
-      title: "Seller company fleet . buyer dealer or company",
-      subtitle: "Company fleet sale through auction, with proforma invoice and VAT handling.",
-      people: [
-        "CSR and Purchaser at check in",
-        "Aatif or assigned approver for auction approval",
-        "DRE and Finance for payment",
-        "Transfer Agent at RTA"
-      ],
-      timing: [
-        "Before deal closure . Trade license and proforma invoice collected.",
-        "Before transfer . Dealer payment verified.",
-        "After transfer . CRM VAT status and prices updated."
-      ],
-      paymentCondition:
-        "Company trade license and signed proforma invoice are on file, auction approval email is available, dealer payment is verified, and CRM has correct VAT status and prices.",
-      steps: [
-        {
-          title: "Collect company Mulkiya",
-          meta: "CSR or Purchaser at check in.",
-          note: "Confirms that the vehicle belongs to the fleet company."
-        },
-        {
-          title: "Collect company trade license",
-          meta: "Purchaser before deal closure.",
-          note: "Used for VAT status and beneficiary details."
-        },
-        {
-          title: "Collect signed and stamped proforma invoice",
-          meta: "Purchaser before deal closure.",
-          note: "Invoice must show agreed price and company details."
-        },
-        {
-          title: "Get auction email approval",
-          meta: "Purchaser starts email chain, approver confirms.",
-          note: "Aatif or designated approver must sign off the deal."
-        },
-        {
-          title: "Collect full payment from dealer",
-          meta: "DRE collects, Finance verifies.",
-          note: "Payment must clear before any transfer is booked."
-        },
-        {
-          title: "Update CRM and confirm VAT status",
-          meta: "Purchaser and BO Team.",
-          note: "Set VAT status to B2B or PMS as applicable and confirm purchase price and other values before payment request."
-        }
-      ],
-      footer:
-        "Purchaser ensures trade license, proforma invoice, approval email, payment, and CRM VAT status are all correct before requesting seller payment."
-    }
-  ];
+        const CATEGORIES = [
+            {
+                id: 'managed',
+                title: 'Managed Deals',
+                iconName: 'car',
+                color: 'bg-blue-600',
+                textColor: 'text-blue-600',
+                description: 'Processes for Seller Assist & Buyer Assist services'
+            },
+            {
+                id: 'auction',
+                title: 'Auction Deals',
+                iconName: 'gavel',
+                color: 'bg-orange-600',
+                textColor: 'text-orange-600',
+                description: 'Processes for B2B Auction transactions'
+            }
+        ];
 
-  const scenarioListEl = document.getElementById("scenarioList");
-  const dealFilterEl = document.getElementById("dealFilter");
-  const taglineEl = document.getElementById("scenarioTagline");
-  const titleEl = document.getElementById("scenarioTitle");
-  const subtitleEl = document.getElementById("scenarioSubtitle");
-  const peopleBoxEl = document.getElementById("peopleBox");
-  const timingBoxEl = document.getElementById("timingBox");
-  const paymentBoxEl = document.getElementById("paymentBox");
-  const stepsContainerEl = document.getElementById("stepsContainer");
-  const footerNoteEl = document.getElementById("footerNote");
-  const prevStepBtn = document.getElementById("prevStepBtn");
-  const nextStepBtn = document.getElementById("nextStepBtn");
+        const DATA = {
+            managed: [
+                {
+                    id: 'm1',
+                    title: 'Individual Seller → Individual Buyer',
+                    stakeholders: ['CSR', 'Purchaser', 'FSR', 'Finance', 'Transfer Agent', 'BO Team'],
+                    steps: [
+                        { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Emirates ID", details: "Collected and updated in system." },
+                        { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Registration Card", details: "Collected and updated in system." },
+                        { step: 3, action: "Generate & Sign SAA", timing: "Before listing car", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Name and Signature should match the Seller’s name in the Mulkiya." },
+                        { step: 4, action: "Generate & Sign BAA", timing: "After deposit collected", owner: "FSR", doc: "Signed BAA", details: "Signed by the buyer. Name must match the mulkiya." },
+                        { step: 5, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment Proof", details: "Collected from FSR and verified by Finance." },
+                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'FSR must verify points 1 to 5 before booking the transfer.' },
+                        { step: 6, action: "Signed Transfer Agreement Form", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "If beneficiary ≠ seller, provide EID (Indiv) or Trade License (Company)." },
+                        { step: 7, action: "Update Buyer's Mulkiya / Hayaza", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya / Hayaza", details: "Updated in system after transfer completion." },
+                        { step: 8, action: "Final CRM Update", timing: "Post Transfer", owner: "BO Team / Transfer Agent", doc: "CRM Record", details: "Mark sold (BO Team). Verify Names (Checked in pt 3&4). Verify Selling price/fees (TA)." },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Transfer Agent verifies points 6 to 8 before requesting Seller Payment.' }
+                    ]
+                },
+                {
+                    id: 'm2',
+                    title: 'Individual Seller (via Rep) → Individual Buyer',
+                    stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'],
+                    steps: [
+                        { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
+                        { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 3, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "Power of Attorney" },
+                        { step: 4, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match POA." },
+                        { step: 5, action: "Sign SAA", timing: "Before Listing", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Matches Mulkiya or POA." },
+                        { step: 6, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA", details: "Signed by buyer." },
+                        { step: 7, action: "Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment", details: "Verified by Finance." },
+                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-7 before booking transfer.' },
+                        { step: 8, action: "Sign TA Form (Seller or POA)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary check required." },
+                        { step: 9, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
+                        { step: 10, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM", details: "Mark sold, verify prices/fees." },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 8-10 before requesting Seller Payment.' }
+                    ]
+                },
+                {
+                    id: 'm3',
+                    title: 'Company Seller (via Rep) → Individual Buyer',
+                    stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'],
+                    steps: [
+                        { step: 1, action: "Collect Trade License", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Trade License" },
+                        { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 3, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match License." },
+                        { step: 4, action: "Sign SAA (Rep)", timing: "Before Listing", owner: "Purchaser / CC", doc: "Signed SAA", details: "Signatory matches License/POA." },
+                        { step: 5, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA" },
+                        { step: 6, action: "Full Payment", timing: "Before Transfer", owner: "FSR / Finance", doc: "Payment" },
+                        { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-6 before booking transfer.' },
+                        { step: 7, action: "Sign TA Form (Rep)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary is Company or Rep." },
+                        { step: 8, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
+                        { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM" },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 7-9 before requesting Seller Payment.' }
+                    ]
+                }
+            ],
+            auction: [
+                {
+                    id: 'a1',
+                    title: 'Individual Seller → Individual/Company Buyer',
+                    stakeholders: ['Purchaser', 'Auction Team', 'CSR', 'DRE', 'Transfer Agent', 'BO Team'],
+                    steps: [
+                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser / Auction Team", doc: "Email", details: "If below criteria, Manager approval required." },
+                        { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
+                        { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 4, action: "Sign VSA", timing: "After Deal Finalization", owner: "Purchaser", doc: "Signed VSA", details: "Check beneficiary details." },
+                        { step: 5, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
+                        { step: 6, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "DRE / Finance", doc: "Payment", details: "Collected by DRE, Verified by Finance." },
+                        { step: 7, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM", details: "Mark Sold (BO), VAT (Purchaser), Fees (DRE/TA), Deductions (Auction TL)." },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
+                    ]
+                },
+                {
+                    id: 'a2',
+                    title: 'Individual Seller (via Rep) → Individual/Company Buyer',
+                    stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'],
+                    steps: [
+                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" },
+                        { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" },
+                        { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 4, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "POA" },
+                        { step: 5, action: "Collect Rep EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID" },
+                        { step: 6, action: "Sign VSA (Seller/POA)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" },
+                        { step: 7, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
+                        { step: 8, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
+                        { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
+                    ]
+                },
+                {
+                    id: 'a3',
+                    title: 'Company Seller (via Rep) → Individual/Company Buyer',
+                    stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'],
+                    steps: [
+                        { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" },
+                        { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 3, action: "Collect Rep EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Rep EID" },
+                        { step: 4, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" },
+                        { step: 5, action: "Sign VSA (Rep)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" },
+                        { step: 6, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" },
+                        { step: 7, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
+                        { step: 8, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
+                    ]
+                },
+                {
+                    id: 'a4',
+                    title: 'Company Seller (Auction-Fleet) → Individual/Company Buyer',
+                    stakeholders: ['CSR', 'Purchaser', 'DRE', 'Finance'],
+                    steps: [
+                        { step: 1, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" },
+                        { step: 2, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" },
+                        { step: 3, action: "Collect Proforma Invoice", timing: "Before Deal Closure", owner: "Purchaser", doc: "Proforma Inv", details: "Signed and stamped." },
+                        { step: 4, action: "Email Confirmation", timing: "Chain Start", owner: "Purchaser", doc: "Email", details: "Needs Aatif's approval." },
+                        { step: 5, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" },
+                        { step: 6, action: "CRM Update", timing: "Post Transfer", owner: "Purchaser", doc: "CRM", details: "Seller Name, VAT Status, Purchase Price." },
+                        { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' }
+                    ]
+                }
+            ]
+        };
 
-  let activeFlowId = null;
-  let activeStepIndex = 0;
+        // --- APP LOGIC ---
 
-  function renderScenarioButtons() {
-    scenarioListEl.innerHTML = "";
-    const selectedDeal = dealFilterEl.value;
+        const app = {
+            state: {
+                view: 'home', // home, category, scenario
+                activeCategory: null,
+                activeScenario: null
+            },
 
-    flows.forEach(flow => {
-      if (selectedDeal !== "all" && flow.dealType !== selectedDeal) {
-        return;
-      }
-      const li = document.createElement("li");
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "scenario-button";
-      btn.setAttribute("data-id", flow.id);
-      btn.setAttribute("aria-pressed", flow.id === activeFlowId ? "true" : "false");
-      btn.innerHTML = `
-        <span class="scenario-name">${flow.label}</span>
-        <span class="scenario-meta">${flow.shortMeta}</span>
-      `;
-      btn.addEventListener("click", () => {
-        setActiveFlow(flow.id);
-      });
-      li.appendChild(btn);
-      scenarioListEl.appendChild(li);
-    });
+            init() {
+                this.renderGlossaryList();
+                this.renderHome();
+            },
 
-    // If nothing selected yet, default to first visible
-    if (!activeFlowId) {
-      const firstBtn = scenarioListEl.querySelector(".scenario-button");
-      if (firstBtn) {
-        const id = firstBtn.getAttribute("data-id");
-        setActiveFlow(id);
-      }
-    } else {
-      // Keep pressed state consistent
-      scenarioListEl
-        .querySelectorAll(".scenario-button")
-        .forEach(btn => {
-          const id = btn.getAttribute("data-id");
-          btn.setAttribute("aria-pressed", id === activeFlowId ? "true" : "false");
+            // -- Navigation --
+
+            goHome() {
+                this.state.view = 'home';
+                this.state.activeCategory = null;
+                this.state.activeScenario = null;
+                this.renderHome();
+            },
+
+            goCategory(catId) {
+                this.state.view = 'category';
+                this.state.activeCategory = catId;
+                this.renderCategory();
+            },
+
+            goScenario(scenario) {
+                this.state.view = 'scenario';
+                this.state.activeScenario = scenario;
+                this.renderScenario();
+            },
+
+            goBackToCategory() {
+                if(this.state.activeCategory) {
+                    this.goCategory(this.state.activeCategory);
+                } else {
+                    this.goHome();
+                }
+            },
+
+            toggleGlossary(show) {
+                const modal = document.getElementById('glossary-modal');
+                const content = document.getElementById('glossary-content');
+                if (show) {
+                    modal.classList.remove('hidden');
+                    // Small delay to allow removing hidden before adding opacity
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        content.classList.remove('scale-95');
+                        content.classList.add('scale-100');
+                    }, 10);
+                } else {
+                    modal.classList.add('opacity-0');
+                    content.classList.remove('scale-100');
+                    content.classList.add('scale-95');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            },
+
+            // -- Helpers --
+            
+            getRoleIcon(role) {
+                const r = role.toLowerCase();
+                if (r.includes('finance') || r.includes('dre')) return 'credit-card';
+                if (r.includes('purchaser') || r.includes('buyer')) return 'user-check';
+                if (r.includes('transfer')) return 'file-text';
+                if (r.includes('bo')) return 'building';
+                return 'users';
+            },
+
+            // -- Renderers --
+
+            renderGlossaryList() {
+                const list = document.getElementById('glossary-list');
+                list.innerHTML = '';
+                Object.entries(GLOSSARY).forEach(([key, val]) => {
+                    const div = document.createElement('div');
+                    div.className = "flex flex-col border-b border-gray-50 pb-2 last:border-0";
+                    div.innerHTML = `
+                        <span class="font-bold text-blue-700">${key.replace('_', ' ')}</span>
+                        <span class="text-gray-600 text-sm">${val}</span>
+                    `;
+                    list.appendChild(div);
+                });
+            },
+
+            renderHome() {
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('home-template');
+                const clone = template.content.cloneNode(true);
+                
+                const grid = clone.getElementById('category-grid');
+                
+                CATEGORIES.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = "group relative overflow-hidden rounded-2xl bg-white shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 text-left w-full";
+                    btn.onclick = () => this.goCategory(cat.id);
+                    
+                    btn.innerHTML = `
+                        <div class="h-2 w-full ${cat.color}"></div>
+                        <div class="p-8">
+                            <div class="inline-flex p-3 rounded-xl ${cat.color} bg-opacity-10 mb-4 group-hover:scale-110 transition-transform">
+                                <i data-lucide="${cat.iconName}" class="w-8 h-8 ${cat.textColor}"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-2">${cat.title}</h2>
+                            <p class="text-gray-500">${cat.description}</p>
+                            
+                            <div class="mt-6 flex items-center text-sm font-semibold text-gray-600 group-hover:text-gray-900">
+                                View Scenarios <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(btn);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(clone);
+                lucide.createIcons();
+            },
+
+            renderCategory() {
+                const catId = this.state.activeCategory;
+                const category = CATEGORIES.find(c => c.id === catId);
+                const scenarios = DATA[catId];
+
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('category-template');
+                const clone = template.content.cloneNode(true);
+
+                // Header
+                const header = clone.getElementById('cat-header');
+                header.innerHTML = `<span class="w-3 h-8 ${category.color} mr-3 rounded-full"></span> ${category.title} Scenarios`;
+
+                // List
+                const list = clone.getElementById('scenario-list');
+                scenarios.forEach(scen => {
+                    const btn = document.createElement('button');
+                    btn.className = "bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all text-left flex justify-between items-center group w-full";
+                    // We need to bind the click
+                    btn.addEventListener('click', () => this.goScenario(scen));
+
+                    btn.innerHTML = `
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                                ${scen.title}
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                ${scen.steps.length} Steps • ${scen.stakeholders.length} Stakeholders
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 p-2 rounded-full group-hover:bg-blue-50 transition-colors">
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-500"></i>
+                        </div>
+                    `;
+                    list.appendChild(btn);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(clone);
+                lucide.createIcons();
+            },
+
+            renderScenario() {
+                const scenario = this.state.activeScenario;
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('scenario-template');
+                const clone = template.content.cloneNode(true);
+
+                clone.getElementById('scenario-title').textContent = scenario.title;
+                
+                // Stakeholder badges
+                const shContainer = clone.getElementById('scenario-stakeholders');
+                scenario.stakeholders.forEach(sh => {
+                    const span = document.createElement('span');
+                    span.className = "px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-white/20 text-white backdrop-blur-sm";
+                    span.textContent = sh;
+                    shContainer.appendChild(span);
+                });
+
+                // Steps
+                const stepsContainer = clone.getElementById('steps-container');
+                scenario.steps.forEach(step => {
+                    const stepDiv = document.createElement('div');
+                    
+                    if (step.type === 'checkpoint') {
+                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
+                        stepDiv.innerHTML = `
+                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
+                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center ring-4 ring-white">
+                                <i data-lucide="shield-check" class="w-3 h-3 text-white"></i>
+                            </div>
+                            <div class="bg-red-50 border border-red-100 rounded-lg p-4 shadow-sm">
+                                <h4 class="text-red-800 font-bold flex items-center">
+                                    <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
+                                    ${step.title}
+                                </h4>
+                                <p class="text-red-700 text-sm mt-1 font-medium">
+                                    Responsible: ${step.owner}
+                                </p>
+                                <p class="text-red-600 text-sm mt-1">${step.desc}</p>
+                            </div>
+                        `;
+                    } else {
+                        const roleIcon = this.getRoleIcon(step.owner);
+                        stepDiv.className = "relative pl-8 pb-8 last:pb-0";
+                        stepDiv.innerHTML = `
+                            <div class="absolute left-0 top-0 h-full w-px bg-gray-200"></div>
+                            <div class="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center ring-4 ring-white">
+                                <span class="text-[10px] text-white font-bold">${step.step}</span>
+                            </div>
+
+                            <div class="bg-white border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+                                    <h3 class="font-bold text-gray-800 text-base">${step.action}</h3>
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold tracking-wide bg-blue-50 text-blue-700 border border-blue-100 flex items-center">
+                                         <i data-lucide="${roleIcon}" class="w-4 h-4 mr-1"></i> ${step.owner}
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="clock" class="w-4 h-4 mr-2 text-gray-400"></i>
+                                        <span>${step.timing}</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="file-text" class="w-4 h-4 mr-2 text-gray-400"></i>
+                                        <span class="font-medium text-gray-700">${step.doc || 'N/A'}</span>
+                                    </div>
+                                </div>
+
+                                ${step.details ? `
+                                    <div class="mt-3 pt-3 border-t border-gray-50 text-sm text-gray-600 bg-gray-50/50 p-2 rounded">
+                                        <span class="font-semibold text-gray-700">Details:</span> ${step.details}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }
+                    stepsContainer.appendChild(stepDiv);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(clone);
+                lucide.createIcons();
+            }
+        };
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
         });
-    }
-  }
-
-  function setActiveFlow(id) {
-    const flow = flows.find(f => f.id === id);
-    if (!flow) return;
-
-    activeFlowId = id;
-    activeStepIndex = 0;
-
-    // Update pressed state on buttons
-    scenarioListEl
-      .querySelectorAll(".scenario-button")
-      .forEach(btn => {
-        const btnId = btn.getAttribute("data-id");
-        btn.setAttribute("aria-pressed", btnId === activeFlowId ? "true" : "false");
-      });
-
-    // Update header
-    taglineEl.textContent = flow.tagline;
-    titleEl.textContent = flow.title;
-    subtitleEl.textContent = flow.subtitle;
-
-    // Update key info
-    peopleBoxEl.innerHTML = flow.people
-      .map(p => `<span class="pill-inline">${p}</span>`)
-      .join(" ");
-    timingBoxEl.innerHTML = flow.timing
-      .map(t => `<div>${t}</div>`)
-      .join("");
-    paymentBoxEl.textContent = flow.paymentCondition;
-
-    // Update steps
-    renderSteps();
-
-    // Footer
-    footerNoteEl.textContent = flow.footer;
-  }
-
-  function renderSteps() {
-    const flow = flows.find(f => f.id === activeFlowId);
-    if (!flow) {
-      stepsContainerEl.innerHTML = `
-        <div class="step">
-          <div class="step-title">No steps to display</div>
-          <div class="step-meta">Choose a scenario to see its checklist.</div>
-        </div>
-      `;
-      return;
-    }
-
-    stepsContainerEl.innerHTML = "";
-    flow.steps.forEach((step, index) => {
-      const stepEl = document.createElement("div");
-      stepEl.className = "step" + (index === activeStepIndex ? " active" : "");
-      stepEl.setAttribute("data-index", index);
-      stepEl.innerHTML = `
-        <div class="step-title">${index + 1}. ${step.title}</div>
-        <div class="step-meta">${step.meta}</div>
-        <div class="step-note">${step.note}</div>
-      `;
-      stepEl.addEventListener("click", () => {
-        activeStepIndex = index;
-        renderSteps();
-      });
-      stepsContainerEl.appendChild(stepEl);
-    });
-  }
-
-  function moveStep(direction) {
-    const flow = flows.find(f => f.id === activeFlowId);
-    if (!flow) return;
-    const maxIndex = flow.steps.length - 1;
-    if (direction === "next") {
-      activeStepIndex = Math.min(maxIndex, activeStepIndex + 1);
-    } else {
-      activeStepIndex = Math.max(0, activeStepIndex - 1);
-    }
-    renderSteps();
-    const activeEl = stepsContainerEl.querySelector(".step.active");
-    if (activeEl) {
-      activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    }
-  }
-
-  dealFilterEl.addEventListener("change", () => {
-    activeFlowId = null;
-    renderScenarioButtons();
-  });
-
-  prevStepBtn.addEventListener("click", () => moveStep("prev"));
-  nextStepBtn.addEventListener("click", () => moveStep("next"));
-
-  // Initial render
-  renderScenarioButtons();
-</script>
+    </script>
 </body>
 </html>
