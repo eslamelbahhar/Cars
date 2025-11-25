@@ -78,7 +78,8 @@
     <nav class="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center cursor-pointer group" onclick="app.goHome()">
-                <img src="/mnt/data/dubizzle cars logo_Horizontal-01 (1).png"
+                <!-- Updated logo file name -->
+                <img src="logo.png"
                      alt="Dubizzle Cars"
                      class="h-9 sm:h-10 mr-3 object-contain">
                 <div>
@@ -334,7 +335,7 @@
                 const scenario = SCENARIO_MAP[id];
                 if (!scenario) return console.error('Scenario not found:', id);
 
-                // Auto-detect category for correct breadcrumb/back navigation
+                // Auto detect category for correct breadcrumb/back navigation
                 if (!this.state.activeCategory) {
                     const catId = Object.keys(DATA).find(key => DATA[key].some(s => s.id === id));
                     if (catId) this.state.activeCategory = catId;
@@ -476,7 +477,7 @@
             renderHome() {
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('home-template');
-                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+                container.innerHTML = template.innerHTML;
                 
                 const grid = document.getElementById('category-grid');
                 let html = '';
@@ -516,7 +517,7 @@
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('category-template');
                 
-                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+                container.innerHTML = template.innerHTML;
 
                 if(document.getElementById('crumb-category')) document.getElementById('crumb-category').textContent = category.title;
                 if(document.getElementById('cat-header-title')) document.getElementById('cat-header-title').textContent = category.title;
@@ -560,15 +561,13 @@
 
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('scenario-template');
-                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+                container.innerHTML = template.innerHTML;
 
-                // Safely hydrate static elements
                 if(document.getElementById('crumb-cat-link')) document.getElementById('crumb-cat-link').textContent = category.title;
                 if(document.getElementById('crumb-scenario')) document.getElementById('crumb-scenario').textContent = scenario.title;
                 if(document.getElementById('header-cat-title')) document.getElementById('header-cat-title').textContent = category.title;
                 if(document.getElementById('header-scenario-title')) document.getElementById('header-scenario-title').textContent = scenario.title;
 
-                // 1. Stakeholders
                 let shHtml = '';
                 const uniqueRoles = new Set(); 
                 scenario.stakeholders.forEach(sh => {
@@ -589,7 +588,6 @@
                     });
                 }
 
-                // 2. Docs
                 let docsHtml = '';
                 const docsSet = new Set();
                 scenario.steps.forEach(s => { if (s.doc) docsSet.add(s.doc); });
@@ -602,7 +600,6 @@
                 }
                 if(document.getElementById('docs-summary')) document.getElementById('docs-summary').innerHTML = docsHtml;
 
-                // 3. Steps
                 let stepsHtml = '';
                 let phases = [];
                 let currentBatch = [];
@@ -662,7 +659,6 @@
             }
         };
 
-        // Expose app to window strictly for onclick handlers
         window.app = app;
         window.addEventListener('DOMContentLoaded', () => { app.init(); });
     </script>
