@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dubizzle Cars Payment SOP Guide v3.3</title>
+    <title>Dubizzle Cars Payment SOP Guide v3.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -85,7 +85,7 @@
                     </h1>
                     <div class="flex items-center mt-0.5">
                         <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-2">Digital Learning Guide</span>
-                        <span class="bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.5 rounded font-bold border border-emerald-200">v3.3 Stable</span>
+                        <span class="bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.5 rounded font-bold border border-emerald-200">v3.4 Stable</span>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <!-- TEMPLATES (Used for structure only) -->
+    <!-- TEMPLATES -->
     <template id="home-template">
         <div class="animate-fadeIn">
             <div class="text-center mb-12 pt-4">
@@ -289,12 +289,9 @@
             ]
         };
 
-        // Precompute a flat map of all scenarios by ID to avoid lookups
         const SCENARIO_MAP = {};
-        Object.keys(DATA).forEach(catKey => {
-            DATA[catKey].forEach(scen => {
-                SCENARIO_MAP[scen.id] = scen;
-            });
+        Object.keys(DATA).forEach(key => {
+            DATA[key].forEach(scen => SCENARIO_MAP[scen.id] = scen);
         });
 
         const app = {
@@ -311,14 +308,10 @@
                 this.renderHome();
             },
 
-            // --- Navigation ---
-
             goHome() {
                 this.state.view = 'home';
                 this.state.activeCategory = null;
                 this.state.activeScenario = null;
-                this.state.currentRoleFilter = 'all';
-                this.state.completedSteps.clear();
                 this.renderHome();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
@@ -330,14 +323,18 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
 
-            // Now accepts string ID directly
-            goScenario(id) {
-                const scenario = typeof id === 'string' ? SCENARIO_MAP[id] : id;
+            goBackToCategory() {
+                if(this.state.activeCategory) this.goCategory(this.state.activeCategory);
+                else this.goHome();
+            },
+
+            openScenario(id) {
+                const scenario = SCENARIO_MAP[id];
                 if (!scenario) return console.error('Scenario not found:', id);
 
-                // Auto-detect category
+                // Auto-detect category for correct breadcrumb/back navigation
                 if (!this.state.activeCategory) {
-                    const catId = Object.keys(DATA).find(key => DATA[key].some(s => s.id === scenario.id));
+                    const catId = Object.keys(DATA).find(key => DATA[key].some(s => s.id === id));
                     if (catId) this.state.activeCategory = catId;
                 }
 
@@ -348,16 +345,6 @@
                 this.renderScenario();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
-
-            goBackToCategory() {
-                if(this.state.activeCategory) {
-                    this.goCategory(this.state.activeCategory);
-                } else {
-                    this.goHome();
-                }
-            },
-
-            // --- Interactions ---
 
             toggleGlossary(show) {
                 const modal = document.querySelector('#glossary-modal');
@@ -421,7 +408,7 @@
                     if(q.length === 0 && this.state.view === 'home') this.renderHome();
                     return;
                 }
-                if(this.state.view !== 'home') return; // Only search on home for now
+                if(this.state.view !== 'home') return; 
 
                 let html = '';
                 let found = false;
@@ -429,9 +416,8 @@
                     DATA[cat.id].forEach(scen => {
                         if(scen.title.toLowerCase().includes(q) || scen.type.toLowerCase().includes(q)) {
                             found = true;
-                            // IMPORTANT: Using string onClick to guarantee function call
                             html += `
-                                <button onclick="window.app.goScenario('${scen.id}')" class="animate-fadeIn bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full mb-4 relative z-10">
+                                <button onclick="window.app.openScenario('${scen.id}')" class="animate-fadeIn bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full mb-4 relative z-10">
                                     <div class="flex-1">
                                         <div class="text-xs font-bold text-blue-500 uppercase mb-1">${cat.title}</div>
                                         <h3 class="text-xl font-bold text-slate-800">${scen.title}</h3>
@@ -446,8 +432,6 @@
                 grid.innerHTML = html;
                 lucide.createIcons();
             },
-
-            // --- Render Helpers ---
 
             getRoleIcon(role) {
                 const r = role.toLowerCase();
@@ -477,8 +461,6 @@
                 return { bg: 'bg-white', border: 'border-slate-100', icon: 'text-slate-400', iconBg: 'bg-slate-50', accent: 'bg-slate-300' };
             },
 
-            // --- Renders (Using String Templates for safety) ---
-
             renderGlossaryList() {
                 const list = document.getElementById('glossary-list');
                 if(!list) return;
@@ -492,11 +474,9 @@
             renderHome() {
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('home-template');
-                const clone = template.content.cloneNode(true);
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
                 
-                // We need to manually inject grid content because cloning loses listeners if we added them there
-                // But wait, we are now using string onclicks. So we can just inject HTML.
-                const grid = clone.querySelector('#category-grid');
+                const grid = document.getElementById('category-grid');
                 let html = '';
                 
                 CATEGORIES.forEach(cat => {
@@ -523,11 +503,7 @@
                     `;
                 });
                 
-                // Note: cloning template first, then modifying is safer
-                container.innerHTML = '';
-                container.appendChild(clone);
-                // Now inject grid
-                document.getElementById('category-grid').innerHTML = html;
+                grid.innerHTML = html;
                 lucide.createIcons();
             },
 
@@ -538,11 +514,10 @@
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('category-template');
                 
-                container.innerHTML = '';
-                container.appendChild(template.content.cloneNode(true));
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
 
-                document.getElementById('crumb-category').textContent = category.title;
-                document.getElementById('cat-header-title').textContent = category.title;
+                if(document.getElementById('crumb-category')) document.getElementById('crumb-category').textContent = category.title;
+                if(document.getElementById('cat-header-title')) document.getElementById('cat-header-title').textContent = category.title;
 
                 let html = '';
                 scenarios.forEach((scen, index) => {
@@ -552,7 +527,7 @@
                     if (scen.type.includes('POA')) typeIcon = 'file-signature';
                     
                     html += `
-                        <button onclick="window.app.goScenario('${scen.id}')" style="animation-delay: ${index * 75}ms" class="animate-slideIn ${theme.bg} p-6 rounded-2xl border-2 ${theme.border} shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full relative overflow-hidden z-10">
+                        <button onclick="window.app.openScenario('${scen.id}')" style="animation-delay: ${index * 75}ms" class="animate-slideIn ${theme.bg} p-6 rounded-2xl border-2 ${theme.border} shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full relative overflow-hidden z-10">
                             <div class="absolute left-0 top-0 bottom-0 w-1.5 ${theme.accent} opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             <div class="mr-6 ${theme.iconBg} p-4 rounded-xl border border-white/50 group-hover:scale-110 transition-transform shadow-sm flex-shrink-0">
                                 <i data-lucide="${typeIcon}" class="w-8 h-8 ${theme.icon} transition-colors"></i>
@@ -571,7 +546,8 @@
                         </button>
                     `;
                 });
-                document.getElementById('scenario-list').innerHTML = html;
+                const list = document.getElementById('scenario-list');
+                if(list) list.innerHTML = html;
                 lucide.createIcons();
             },
 
@@ -582,15 +558,15 @@
 
                 const container = document.getElementById('app-container');
                 const template = document.getElementById('scenario-template');
-                container.innerHTML = '';
-                container.appendChild(template.content.cloneNode(true));
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
 
-                document.getElementById('crumb-cat-link').textContent = category.title;
-                document.getElementById('crumb-scenario').textContent = scenario.title;
-                document.getElementById('header-cat-title').textContent = category.title;
-                document.getElementById('header-scenario-title').textContent = scenario.title;
+                // Safely hydrate static elements
+                if(document.getElementById('crumb-cat-link')) document.getElementById('crumb-cat-link').textContent = category.title;
+                if(document.getElementById('crumb-scenario')) document.getElementById('crumb-scenario').textContent = scenario.title;
+                if(document.getElementById('header-cat-title')) document.getElementById('header-cat-title').textContent = category.title;
+                if(document.getElementById('header-scenario-title')) document.getElementById('header-scenario-title').textContent = scenario.title;
 
-                // Stakeholders & Filter
+                // 1. Stakeholders
                 let shHtml = '';
                 const uniqueRoles = new Set(); 
                 scenario.stakeholders.forEach(sh => {
@@ -599,17 +575,19 @@
                     uniqueRoles.add(sh);
                 });
                 scenario.steps.forEach(s => { if(s.owner && !s.type) s.owner.split('/').forEach(part => uniqueRoles.add(part.trim())); });
-                document.getElementById('scenario-stakeholders').innerHTML = shHtml;
+                if(document.getElementById('scenario-stakeholders')) document.getElementById('scenario-stakeholders').innerHTML = shHtml;
 
                 const filterSelect = document.getElementById('role-filter');
-                Array.from(uniqueRoles).sort().forEach(role => {
-                    const opt = document.createElement('option');
-                    opt.value = role;
-                    opt.textContent = `Focus on: ${role}`;
-                    filterSelect.appendChild(opt);
-                });
+                if(filterSelect) {
+                    Array.from(uniqueRoles).sort().forEach(role => {
+                        const opt = document.createElement('option');
+                        opt.value = role;
+                        opt.textContent = `Focus on: ${role}`;
+                        filterSelect.appendChild(opt);
+                    });
+                }
 
-                // Docs
+                // 2. Docs
                 let docsHtml = '';
                 const docsSet = new Set();
                 scenario.steps.forEach(s => { if (s.doc) docsSet.add(s.doc); });
@@ -620,9 +598,9 @@
                         docsHtml += `<div class="flex items-start text-xs font-medium text-slate-700 p-2.5 bg-white rounded-lg border border-indigo-50 shadow-sm hover:shadow-md transition-shadow"><i data-lucide="file" class="w-4 h-4 mr-2.5 mt-0.5 text-indigo-500"></i> <span class="flex-1 leading-snug">${doc}</span></div>`;
                     });
                 }
-                document.getElementById('docs-summary').innerHTML = docsHtml;
+                if(document.getElementById('docs-summary')) document.getElementById('docs-summary').innerHTML = docsHtml;
 
-                // Steps
+                // 3. Steps
                 let stepsHtml = '';
                 let phases = [];
                 let currentBatch = [];
@@ -676,7 +654,7 @@
                         stepsHtml += `</div>`;
                     }
                 });
-                document.getElementById('steps-container').innerHTML = stepsHtml;
+                if(document.getElementById('steps-container')) document.getElementById('steps-container').innerHTML = stepsHtml;
                 lucide.createIcons();
                 this.updateProgressBar();
             }
