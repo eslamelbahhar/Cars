@@ -1,372 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- UPDATE TITLE HERE -->
-    <title>SOP Interactive Template</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
-        .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
-        .step-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-        .step-card:active { transform: scale(0.99); }
-        .step-completed { background: #f0fdf4 !important; border-left-color: #22c55e !important; opacity: 0.9; }
-        .step-completed .step-icon-bg { background-color: #22c55e !important; color: white !important; border-color: #22c55e !important; }
-        .step-completed::after { content: '✓'; position: absolute; top: 1.5rem; right: 1.5rem; font-weight: 800; color: #22c55e; font-size: 1.5rem; }
-        .step-dimmed { opacity: 0.15; filter: grayscale(100%); pointer-events: none; }
-        .progress-line::before { content: ''; position: absolute; top: 3rem; bottom: -3rem; left: 1.75rem; width: 2px; background: #e2e8f0; z-index: 0; }
-        .step-card:last-child .progress-line::before { display: none; }
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid #f8fafc; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubizzle Cars Payment SOP Guide v1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+        .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Interaction States */
+        .step-card { 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer;
+        }
+        .step-card:active { transform: scale(0.99); }
+        
+        /* Completed State */
+        .step-completed {
+            background: #f0fdf4 !important;
+            border-left-color: #22c55e !important;
+            opacity: 0.9;
+        }
+        .step-completed .step-icon-bg {
+            background-color: #22c55e !important;
+            color: white !important;
+            border-color: #22c55e !important;
+        }
+        .step-completed::after {
+            content: '✓';
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-weight: 800;
+            color: #22c55e;
+            font-size: 1.5rem;
+        }
+
+        .step-dimmed { opacity: 0.15; filter: grayscale(100%); pointer-events: none; }
+        
+        /* Progress Line */
+        .progress-line::before {
+            content: '';
+            position: absolute;
+            top: 3rem;
+            bottom: -3rem;
+            left: 1.75rem;
+            width: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        .step-card:last-child .progress-line::before { display: none; }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid #f8fafc; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-red-100 selection:text-red-900">
 
-    <!-- Navigation -->
-    <nav class="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center cursor-pointer group" onclick="app.goHome()">
-                <!-- LOGO REPLACEMENT -->
-                <!-- Ensure the image file is in the same folder as this HTML file -->
-                <img src="dubizzle cars logo_Horizontal-01 (1).png" alt="Dubizzle Cars" class="h-10 w-auto mr-4 object-contain group-hover:scale-105 transition-transform">
-                
-                <div>
-                    <h1 class="text-xl font-bold text-slate-900 tracking-tight leading-none">
-                        Payment <span class="text-red-600">SOP</span>
-                    </h1>
-                    <div class="flex items-center mt-0.5">
-                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-2">Interactive Guide</span>
-                    </div>
-                </div>
-            </div>
-            <button onclick="app.toggleGlossary(true)" class="flex items-center text-slate-600 hover:text-blue-600 px-4 py-2 rounded-full hover:bg-slate-50 transition-all text-sm font-semibold border border-transparent hover:border-slate-200 group">
-                <i data-lucide="book-open" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-500 transition-colors"></i> Glossary
-            </button>
-        </div>
-    </nav>
+        <nav class="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center cursor-pointer group" onclick="app.goHome()">
+                <img src="image_0.png" alt="Dubizzle Cars Logo" class="w-32 h-auto mr-3 group-hover:scale-105 transition-transform">
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight leading-none">
+                        Payment <span class="text-red-600">SOP</span>
+                    </h1>
+                    <div class="flex items-center mt-0.5">
+                        <span class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mr-2">Digital Learning Guide</span>
+                        <span class="bg-emerald-100 text-emerald-700 text-[9px] px-1.5 py-0.5 rounded font-bold border border-emerald-200">v1.0 Stable</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="app.toggleGlossary(true)" class="flex items-center text-slate-600 hover:text-blue-600 px-4 py-2 rounded-full hover:bg-slate-50 transition-all text-sm font-semibold border border-transparent hover:border-slate-200 group focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 outline-none">
+                <i data-lucide="book-open" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-blue-500 transition-colors"></i> 
+                Glossary
+            </button>
+        </div>
+    </nav>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
-        <div id="app-container"></div>
-    </main>
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+        <div id="app-container"></div>
+    </main>
 
-    <footer class="text-center text-slate-400 text-xs py-10 mt-auto border-t border-slate-200 bg-white">
-        <p class="font-medium">© Dubizzle Cars • Internal Resource</p>
-    </footer>
+        <footer class="text-center text-slate-400 text-xs py-10 mt-auto border-t border-slate-200 bg-white">
+        <p class="font-medium">© Dubizzle Cars L&D Team • Internal Learning Resource</p>
+    </footer>
 
-    <!-- Glossary Modal -->
-    <div id="glossary-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300" id="glossary-content">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <h3 class="text-xl font-bold text-slate-800 flex items-center">
-                    <i data-lucide="book-open" class="w-6 h-6 mr-3 text-blue-600"></i> Glossary
-                </h3>
-                <button onclick="app.toggleGlossary(false)" class="text-slate-400 hover:text-red-600 bg-white p-2 rounded-full hover:bg-red-50 transition-colors border border-slate-100 hover:border-red-100 shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" id="glossary-list"></div>
-            <div class="p-4 bg-slate-50 text-center border-t border-slate-100">
-                <button onclick="app.toggleGlossary(false)" class="bg-slate-800 text-white px-8 py-2.5 rounded-lg hover:bg-slate-900 transition-colors text-sm font-semibold shadow-lg shadow-slate-200">Close Guide</button>
-            </div>
-        </div>
-    </div>
+        <div id="glossary-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300" id="glossary-content">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="book-open" class="w-6 h-6 mr-3 text-blue-600"></i> Terminology
+                </h3>
+                <button onclick="app.toggleGlossary(false)" class="text-slate-400 hover:text-red-600 bg-white p-2 rounded-full hover:bg-red-50 transition-colors border border-slate-100 hover:border-red-100 shadow-sm">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" id="glossary-list"></div>
+            <div class="p-4 bg-slate-50 text-center border-t border-slate-100">
+                <button onclick="app.toggleGlossary(false)" class="bg-slate-800 text-white px-8 py-2.5 rounded-lg hover:bg-slate-900 transition-colors text-sm font-semibold shadow-lg shadow-slate-200 hover:shadow-xl transform hover:-translate-y-0.5">
+                    Close Guide
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- ========================================================================================== -->
-    <!-- TEMPLATES (DO NOT EDIT UNLESS YOU WANT TO CHANGE LAYOUT) -->
-    <!-- ========================================================================================== -->
-    
-    <template id="home-template">
-        <div class="animate-fadeIn">
-            <div class="text-center mb-12 pt-4">
-                <h2 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Payment Operations Workflow</h2>
-                <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-8">Select a department or category to view workflows.</p>
-                <div class="max-w-lg mx-auto relative group mb-8">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i data-lucide="search" class="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i></div>
-                    <input type="text" onkeyup="app.searchScenarios(this.value)" class="block w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm" placeholder="Search workflows...">
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" id="category-grid"></div>
-        </div>
-    </template>
+        <template id="home-template">
+        <div class="animate-fadeIn">
+            <div class="text-center mb-12 pt-4">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Payment Operations Workflow</h2>
+                <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-8">Select a transaction type to start the interactive guide.</p>
+                <div class="max-w-lg mx-auto relative group mb-8">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    </div>
+                    <input type="text" onkeyup="app.searchScenarios(this.value)" 
+                        class="block w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm" 
+                        placeholder="Search for 'Fleet', 'POA', 'Company'...">
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mb-12">
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+                    <div class="text-2xl font-bold text-slate-800">8</div>
+                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Scenarios</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+                    <div class="text-2xl font-bold text-blue-600">6</div>
+                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Key Roles</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm text-center">
+                    <div class="text-2xl font-bold text-emerald-600">12+</div>
+                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Documents</div>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-l-4 border-orange-400 rounded-r-xl p-6 mb-12 flex items-start gap-5 shadow-sm max-w-4xl mx-auto">
+                <div class="bg-orange-100 p-3 rounded-full flex-shrink-0 shadow-inner">
+                    <i data-lucide="alert-triangle" class="w-6 h-6 text-orange-600"></i>
+                </div>
+                <div class="text-sm text-amber-900 leading-relaxed">
+                    <p class="font-bold mb-2 text-lg text-orange-800">⚠️ Critical SLA Policy</p>
+                    <p>If a payment is marked as <span class="bg-white/50 px-1 py-0.5 rounded font-mono font-bold border border-orange-200">Verified</span> but the seller hasn't received it after <span class="font-bold underline decoration-orange-300 decoration-2 underline-offset-2">24 hours</span>, contact Finance immediately.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" id="category-grid"></div>
+        </div>
+    </template>
 
-    <template id="category-template">
-        <div class="animate-fadeIn">
-            <div class="flex items-center text-sm text-slate-400 mb-6">
-                <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="app.goHome()">Home</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 mx-2"></i>
-                <span class="font-semibold text-slate-800" id="crumb-category"></span>
-            </div>
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex items-center mb-4 md:mb-0">
-                    <button onclick="app.goHome()" class="bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-blue-600 p-3 rounded-xl transition-all mr-5 border border-slate-200 group" title="Back to Home"><i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i></button>
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900" id="cat-header-title"></h2>
-                        <p class="text-sm text-slate-500 font-medium mt-1">Select a specific scenario</p>
-                    </div>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 gap-5 max-w-5xl mx-auto" id="scenario-list"></div>
-        </div>
-    </template>
+    <template id="category-template">
+        <div class="animate-fadeIn">
+            <div class="flex items-center text-sm text-slate-400 mb-6">
+                <span class="hover:text-blue-600 cursor-pointer transition-colors" onclick="app.goHome()">Home</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 mx-2"></i>
+                <span class="font-semibold text-slate-800" id="crumb-category"></span>
+            </div>
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <button onclick="app.goHome()" class="bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-blue-600 p-3 rounded-xl transition-all mr-5 border border-slate-200 group" title="Back to Home">
+                        <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900" id="cat-header-title"></h2>
+                        <p class="text-sm text-slate-500 font-medium mt-1">Select a specific transaction scenario</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-5 max-w-5xl mx-auto" id="scenario-list"></div>
+        </div>
+    </template>
 
-    <template id="scenario-template">
-        <div class="animate-fadeIn pb-20">
-            <div class="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 -mx-4 px-4 sm:-mx-8 sm:px-8 py-4 mb-8 shadow-sm transition-all">
-                <div class="max-w-6xl mx-auto flex flex-col gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-4 overflow-hidden">
-                            <button onclick="app.goBackToCategory()" class="bg-white text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 px-3 py-2 rounded-lg shadow-sm transition-all flex-shrink-0 group" title="Back"><i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i></button>
-                            <div class="flex flex-col overflow-hidden">
-                                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider" id="header-cat-title"></h2>
-                                <h1 class="text-lg font-bold text-slate-800 truncate" id="header-scenario-title"></h1>
-                            </div>
-                        </div>
-                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
-                            <i data-lucide="filter" class="w-4 h-4 text-slate-400 mr-2"></i>
-                            <select id="role-filter" onchange="app.filterByRole(this.value)" class="bg-transparent text-sm font-semibold text-slate-700 focus:outline-none cursor-pointer w-40 py-1"><option value="all">All Roles</option></select>
-                        </div>
-                    </div>
-                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex items-center">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500 ease-out w-0"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-[-10px]">
-                        <span>Progress</span><span id="progress-text">0% Completed</span>
-                    </div>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-                <div class="lg:col-span-8 order-2 lg:order-1"><div class="space-y-0" id="steps-container"></div></div>
-                <div class="lg:col-span-4 order-1 lg:order-2 lg:sticky lg:top-48 space-y-6">
-                    <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <div class="bg-blue-100 p-2 rounded-full text-blue-600 flex-shrink-0"><i data-lucide="mouse-pointer-click" class="w-5 h-5"></i></div>
-                            <div><h4 class="font-bold text-blue-900 text-sm">Interactive Checklist</h4><p class="text-xs text-blue-700 mt-1 leading-relaxed">Click on any step card to mark it as <strong>Complete</strong>.</p></div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center"><i data-lucide="folder-open" class="w-3 h-3 mr-2"></i> Required Documents</h3><div class="space-y-2" id="docs-summary"></div></div>
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center"><i data-lucide="users" class="w-3 h-3 mr-2"></i> Stakeholders Involved</h3><div class="flex flex-wrap gap-2" id="scenario-stakeholders"></div></div>
-                </div>
-            </div>
-        </div>
-    </template>
+    <template id="scenario-template">
+        <div class="animate-fadeIn pb-20">
+            <div class="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 -mx-4 px-4 sm:-mx-8 sm:px-8 py-4 mb-8 shadow-sm transition-all">
+                <div class="max-w-6xl mx-auto flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4 overflow-hidden">
+                            <button onclick="app.goBackToCategory()" class="bg-white text-slate-500 hover:text-blue-600 border border-slate-200 hover:border-blue-300 px-3 py-2 rounded-lg shadow-sm transition-all flex-shrink-0 group" title="Back">
+                                <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                            </button>
+                            <div class="flex flex-col overflow-hidden">
+                                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider" id="header-cat-title"></h2>
+                                <h1 class="text-lg font-bold text-slate-800 truncate" id="header-scenario-title"></h1>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
+                            <i data-lucide="filter" class="w-4 h-4 text-slate-400 mr-2"></i>
+                            <select id="role-filter" onchange="app.filterByRole(this.value)" class="bg-transparent text-sm font-semibold text-slate-700 focus:outline-none cursor-pointer w-40 py-1">
+                                <option value="all">All Roles</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex items-center">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500 ease-out w-0"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-[-10px]">
+                        <span>Progress</span>
+                        <span id="progress-text">0% Completed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <div class="lg:col-span-8 order-2 lg:order-1">
+                    <div class="space-y-0" id="steps-container"></div>
+                </div>
+                <div class="lg:col-span-4 order-1 lg:order-2 lg:sticky lg:top-48 space-y-6">
+                    <div class="bg-gradient-to-br from-white to-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-blue-100 p-2 rounded-full text-blue-600 flex-shrink-0">
+                                <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-blue-900 text-sm">Interactive Checklist</h4>
+                                <p class="text-xs text-blue-700 mt-1 leading-relaxed">
+                                    Click on any step card to mark it as <strong>Complete</strong>. Use this to track your real-time progress.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i data-lucide="folder-open" class="w-3 h-3 mr-2"></i> Required Documents
+                        </h3>
+                        <div class="space-y-2" id="docs-summary"></div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                            <i data-lucide="users" class="w-3 h-3 mr-2"></i> Stakeholders Involved
+                        </h3>
+                        <div class="flex flex-wrap gap-2" id="scenario-stakeholders"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
 
-    <!-- ========================================================================================== -->
-    <!-- CONFIGURATION AREA - EDIT BELOW THIS LINE -->
-    <!-- ========================================================================================== -->
+    <script>
+        const GLOSSARY = {
+            SAA: "Seller Assist Agreement (Managed)",
+            BAA: "Buyer Assist Agreement (Managed)",
+            TA_Form: "Transfer Agreement Form (Managed)",
+            POA: "Power of Attorney",
+            VSA: "Vehicle Sales Agreement (Auction)",
+            CSR: "Customer Service Representative",
+            FSR: "Field Sales Representative",
+            TA: "Transfer Agent",
+            DRE: "Dealer Relations Executive",
+            BO: "Back Office",
+            PMS: "Profit Margin Scheme"
+        };
 
-    <script>
-        // 1. GLOSSARY: Define your acronyms here
-        const GLOSSARY = {
-            SOP: "Standard Operating Procedure",
-            POC: "Point of Contact",
-            HR: "Human Resources",
-            IT: "Information Technology"
-        };
+        const CATEGORIES = [
+            { id: 'managed', title: 'Managed Deals', iconName: 'car-front', color: 'text-blue-600', bgGradient: 'from-blue-500 to-blue-600', lightBg: 'bg-blue-50', description: 'C2C transactions including Seller Assist & Buyer Assist.' },
+            { id: 'auction', title: 'Auction Deals', iconName: 'gavel', color: 'text-orange-600', bgGradient: 'from-orange-500 to-red-500', lightBg: 'bg-orange-50', description: 'B2B transactions involving dealers and fleet sellers.' }
+        ];
 
-        // 2. CATEGORIES: Define the main sections of your app
-        // iconName refers to Lucide Icons: https://lucide.dev/icons
-        const CATEGORIES = [
-            { 
-                id: 'cat1', 
-                title: 'Process Category A', 
-                iconName: 'briefcase', 
-                color: 'text-blue-600', 
-                bgGradient: 'from-blue-500 to-blue-600', 
-                lightBg: 'bg-blue-50', 
-                description: 'Description of this category of processes.' 
-            },
-            { 
-                id: 'cat2', 
-                title: 'Process Category B', 
-                iconName: 'settings', 
-                color: 'text-orange-600', 
-                bgGradient: 'from-orange-500 to-red-500', 
-                lightBg: 'bg-orange-50', 
-                description: 'Description of the second category.' 
-            }
-        ];
+        const DATA = {
+            managed: [
+                { id: 'm1', title: 'Individual Seller → Individual Buyer', type: 'Standard', stakeholders: ['CSR', 'Purchaser', 'FSR', 'Finance', 'Transfer Agent', 'BO Team'], steps: [ { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Emirates ID", details: "Collected and updated in system." }, { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Registration Card", details: "Collected and updated in system." }, { step: 3, action: "Generate & Sign SAA", timing: "Before listing car", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Name and Signature should match the Seller’s name in the Mulkiya." }, { step: 4, action: "Generate & Sign BAA", timing: "After deposit collected", owner: "FSR", doc: "Signed BAA", details: "Signed by the buyer. Name must match the mulkiya." }, { step: 5, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment Proof", details: "Collected from FSR and verified by Finance." }, { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'FSR must verify points 1 to 5 before booking the transfer.' }, { step: 6, action: "Signed Transfer Agreement Form", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "If beneficiary ≠ seller, provide EID (Indiv) or Trade License (Company)." }, { step: 7, action: "Update Buyer's Mulkiya / Hayaza", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya / Hayaza", details: "Updated in system after transfer completion." }, { step: 8, action: "Final CRM Update", timing: "Post Transfer", owner: "BO Team / Transfer Agent", doc: "CRM Record", details: "Mark sold (BO Team). Verify Names (Checked in pt 3&4). Verify Selling price/fees (TA)." }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Transfer Agent verifies points 6 to 8 before requesting Seller Payment.' } ] },
+                { id: 'm2', title: 'Individual Seller (via Rep) → Individual Buyer', type: 'POA / Rep', stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'], steps: [ { step: 1, action: "Collect Seller's EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" }, { step: 2, action: "Collect Seller's Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 3, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "Power of Attorney" }, { step: 4, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match POA." }, { step: 5, action: "Sign SAA", timing: "Before Listing", owner: "Purchaser / Call Center", doc: "Signed SAA", details: "Matches Mulkiya or POA." }, { step: 6, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA", details: "Signed by buyer." }, { step: 7, action: "Full Payment", timing: "Before Booking Transfer", owner: "FSR / Finance", doc: "Payment", details: "Verified by Finance." }, { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-7 before booking transfer.' }, { step: 8, action: "Sign TA Form (Seller or POA)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary check required." }, { step: 9, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" }, { step: 10, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM", details: "Mark sold, verify prices/fees." }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 8-10 before requesting Seller Payment.' } ] },
+                { id: 'm3', title: 'Company Seller (via Rep) → Individual Buyer', type: 'Company / Rep', stakeholders: ['CSR', 'Purchaser', 'Transfer Agent', 'FSR', 'Finance'], steps: [ { step: 1, action: "Collect Trade License", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Trade License" }, { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 3, action: "Collect Rep's EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID", details: "Name must match License." }, { step: 4, action: "Sign SAA (Rep)", timing: "Before Listing", owner: "Purchaser / CC", doc: "Signed SAA", details: "Signatory matches License/POA." }, { step: 5, action: "Sign BAA", timing: "After Deposit", owner: "FSR", doc: "Signed BAA" }, { step: 6, action: "Full Payment", timing: "Before Transfer", owner: "FSR / Finance", doc: "Payment" }, { type: 'checkpoint', title: 'Pre-Transfer Verification', owner: 'FSR', desc: 'Check points 1-6 before booking transfer.' }, { step: 7, action: "Sign TA Form (Rep)", timing: "Before Transfer", owner: "Transfer Agent", doc: "TA Form", details: "Beneficiary is Company or Rep." }, { step: 8, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" }, { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "BO Team / TA", doc: "CRM" }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Transfer Agent', desc: 'Check points 7-9 before requesting Seller Payment.' } ] }
+            ],
+            auction: [
+                { id: 'a1', title: 'Individual Seller → Individual/Company Buyer', type: 'Standard', stakeholders: ['Purchaser', 'Auction Team', 'CSR', 'DRE', 'Transfer Agent', 'BO Team'], steps: [ { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser / Auction Team", doc: "Email", details: "If below criteria, Manager approval required." }, { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" }, { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 4, action: "Sign VSA", timing: "After Deal Finalization", owner: "Purchaser", doc: "Signed VSA", details: "Check beneficiary details." }, { step: 5, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" }, { step: 6, action: "Collect Full Payment", timing: "Before Booking Transfer", owner: "DRE / Finance", doc: "Payment", details: "Collected by DRE, Verified by Finance." }, { step: 7, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM", details: "Mark Sold (BO), VAT (Purchaser), Fees (DRE/TA), Deductions (Auction TL)." }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' } ] },
+                { id: 'a2', title: 'Individual Seller (via Rep) → Individual/Company Buyer', type: 'POA / Rep', stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'], steps: [ { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" }, { step: 2, action: "Collect Seller EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Seller EID" }, { step: 3, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 4, action: "Collect POA", timing: "At Transfer", owner: "Transfer Agent", doc: "POA" }, { step: 5, action: "Collect Rep EID", timing: "At Transfer", owner: "Transfer Agent", doc: "Rep EID" }, { step: 6, action: "Sign VSA (Seller/POA)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" }, { step: 7, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" }, { step: 8, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" }, { step: 9, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' } ] },
+                { id: 'a3', title: 'Company Seller (via Rep) → Individual/Company Buyer', type: 'Company / Rep', stakeholders: ['Purchaser', 'CSR', 'Transfer Agent', 'DRE', 'Finance'], steps: [ { step: 1, action: "Email Confirmation", timing: "Start of Chain", owner: "Purchaser", doc: "Email" }, { step: 2, action: "Collect Company Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 3, action: "Collect Rep EID", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Rep EID" }, { step: 4, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" }, { step: 5, action: "Sign VSA (Rep)", timing: "After Finalization", owner: "Purchaser", doc: "Signed VSA" }, { step: 6, action: "Update Buyer Mulkiya", timing: "After Transfer", owner: "Transfer Agent", doc: "New Mulkiya" }, { step: 7, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" }, { step: 8, action: "CRM Update", timing: "Post Transfer", owner: "Various", doc: "CRM" }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' } ] },
+                { id: 'a4', title: 'Company Seller (Auction-Fleet) → Individual/Company Buyer', type: 'Fleet', stakeholders: ['CSR', 'Purchaser', 'DRE', 'Finance'], steps: [ { step: 1, action: "Collect Seller Mulkiya", timing: "At Check-In", owner: "CSR / Purchaser", doc: "Mulkiya" }, { step: 2, action: "Collect Trade License", timing: "Before Deal Closure", owner: "Purchaser", doc: "Trade License" }, { step: 3, action: "Collect Proforma Invoice", timing: "Before Deal Closure", owner: "Purchaser", doc: "Proforma Inv", details: "Signed and stamped." }, { step: 4, action: "Email Confirmation", timing: "Chain Start", owner: "Purchaser", doc: "Email", details: "Needs Aatif's approval." }, { step: 5, action: "Collect Full Payment", timing: "Before Transfer", owner: "DRE / Finance", doc: "Payment" }, { step: 6, action: "CRM Update", timing: "Post Transfer", owner: "Purchaser", doc: "CRM", details: "Seller Name, VAT Status, Purchase Price." }, { type: 'checkpoint', title: 'Seller Payment Release Check', owner: 'Purchaser', desc: 'Purchaser checks all points before requesting Seller Payment.' } ] }
+            ]
+        };
 
-        // 3. DATA: Define the scenarios and steps for each category
-        // 'owner' field determines the color coding (see getRoleColorStyles below)
-        // 'type' determines the card styling (see getScenarioTheme below)
-        const DATA = {
-            cat1: [
-                {
-                    id: 'scen1',
-                    title: 'Example Scenario 1',
-                    type: 'Standard',
-                    stakeholders: ['Role A', 'Role B'],
-                    steps: [
-                        { step: 1, action: "Initial Step", timing: "Start", owner: "Role A", doc: "Form 1", details: "Details about step 1." },
-                        { type: 'checkpoint', title: 'Approval Gate', owner: 'Manager', desc: 'Must be approved before continuing.' },
-                        { step: 2, action: "Second Step", timing: "Day 2", owner: "Role B", details: "Details about step 2." }
-                    ]
-                }
-            ],
-            cat2: [
-                {
-                    id: 'scen2',
-                    title: 'Example Scenario 2',
-                    type: 'Complex',
-                    stakeholders: ['Role C'],
-                    steps: [
-                        { step: 1, action: "Step One", timing: "Start", owner: "Role C", details: "Do the thing." }
-                    ]
-                }
-            ]
-        };
+        const SCENARIO_MAP = {};
+        Object.keys(DATA).forEach(key => {
+            DATA[key].forEach(scen => SCENARIO_MAP[scen.id] = scen);
+        });
 
-        // 4. ROLE COLORS: Define how different roles look
-        // Add 'if (role.includes("your-role")) ...' blocks to customize
-        function getRoleStylesConfig(role) {
-            const r = role.toLowerCase();
-            
-            if (r.includes('finance') || r.includes('role a')) {
-                return { bg: 'bg-emerald-100 text-emerald-700', border: 'border-l-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border-emerald-100', cardBg: 'bg-gradient-to-br from-emerald-50/50 to-white' };
-            }
-            
-            if (r.includes('role b')) {
-                return { bg: 'bg-blue-100 text-blue-700', border: 'border-l-blue-500', badge: 'bg-blue-50 text-blue-700 border-blue-100', cardBg: 'bg-gradient-to-br from-blue-50/50 to-white' };
-            }
+        const app = {
+            state: {
+                view: 'home',
+                activeCategory: null,
+                activeScenario: null,
+                currentRoleFilter: 'all',
+                completedSteps: new Set()
+            },
 
-            // Default Style (Gray)
-            return { bg: 'bg-slate-200 text-slate-700', border: 'border-l-slate-400', badge: 'bg-slate-100 text-slate-700 border-slate-200', cardBg: 'bg-gradient-to-br from-slate-50/50 to-white' };
-        }
+            init() {
+                this.renderGlossaryList();
+                this.renderHome();
+            },
 
-        // 5. SCENARIO THEMES: Define how scenario cards look based on 'type'
-        function getScenarioThemeConfig(type) {
-            if (type.includes('Standard')) return { bg: 'bg-white', border: 'border-sky-100', icon: 'text-sky-600', iconBg: 'bg-sky-50', accent: 'bg-sky-500' };
-            if (type.includes('Complex')) return { bg: 'bg-white', border: 'border-violet-100', icon: 'text-violet-600', iconBg: 'bg-violet-50', accent: 'bg-violet-500' };
-            
-            // Default
-            return { bg: 'bg-white', border: 'border-slate-100', icon: 'text-slate-400', iconBg: 'bg-slate-50', accent: 'bg-slate-300' };
-        }
+            goHome() {
+                this.state.view = 'home';
+                this.state.activeCategory = null;
+                this.state.activeScenario = null;
+                this.renderHome();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
 
-        // ==========================================================================================
-        // LOGIC ENGINE (NO NEED TO EDIT BELOW THIS LINE)
-        // ==========================================================================================
+            goCategory(catId) {
+                this.state.view = 'category';
+                this.state.activeCategory = catId;
+                this.renderCategory();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
 
-        const SCENARIO_MAP = {};
-        Object.keys(DATA).forEach(key => { DATA[key].forEach(scen => SCENARIO_MAP[scen.id] = scen); });
+            goBackToCategory() {
+                if(this.state.activeCategory) this.goCategory(this.state.activeCategory);
+                else this.goHome();
+            },
 
-        const app = {
-            state: { view: 'home', activeCategory: null, activeScenario: null, currentRoleFilter: 'all', completedSteps: new Set() },
-            init() { this.renderGlossaryList(); this.renderHome(); },
-            goHome() { this.state.view = 'home'; this.state.activeCategory = null; this.state.activeScenario = null; this.renderHome(); window.scrollTo({ top: 0, behavior: 'smooth' }); },
-            goCategory(catId) { this.state.view = 'category'; this.state.activeCategory = catId; this.renderCategory(); window.scrollTo({ top: 0, behavior: 'smooth' }); },
-            goBackToCategory() { if(this.state.activeCategory) this.goCategory(this.state.activeCategory); else this.goHome(); },
-            openScenario(id) {
-                const scenario = SCENARIO_MAP[id];
-                if (!scenario) return console.error('Scenario not found:', id);
-                if (!this.state.activeCategory) { const catId = Object.keys(DATA).find(key => DATA[key].some(s => s.id === id)); if (catId) this.state.activeCategory = catId; }
-                this.state.view = 'scenario'; this.state.activeScenario = scenario; this.state.currentRoleFilter = 'all'; this.state.completedSteps.clear();
-                this.renderScenario(); window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
-            toggleGlossary(show) {
-                const modal = document.querySelector('#glossary-modal'); const content = document.querySelector('#glossary-content');
-                if (show) { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10); } 
-                else { modal.classList.add('opacity-0'); content.classList.remove('scale-100'); content.classList.add('scale-95'); setTimeout(() => { modal.classList.add('hidden'); }, 300); }
-            },
-            toggleStep(stepId) {
-                const card = document.getElementById(stepId); if(!card) return;
-                if(this.state.completedSteps.has(stepId)) { this.state.completedSteps.delete(stepId); card.classList.remove('step-completed'); } 
-                else { this.state.completedSteps.add(stepId); card.classList.add('step-completed'); }
-                this.updateProgressBar();
-            },
-            updateProgressBar() {
-                const total = this.state.activeScenario.steps.length; const done = this.state.completedSteps.size; const pct = Math.round((done / total) * 100);
-                const bar = document.getElementById('progress-bar'); const txt = document.getElementById('progress-text');
-                if(bar && txt) { bar.style.width = `${pct}%`; txt.textContent = `${pct}% Completed`; }
-            },
-            filterByRole(role) {
-                this.state.currentRoleFilter = role;
-                document.querySelectorAll('.step-card').forEach(step => {
-                    const owner = step.getAttribute('data-owner'); const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
-                    const match = role === 'all' || owner.split('/').some(s => normalize(s).includes(normalize(role)));
-                    match ? step.classList.remove('step-dimmed') : step.classList.add('step-dimmed');
-                });
-            },
-            searchScenarios(query) {
-                const q = query.toLowerCase(); const grid = document.getElementById('category-grid');
-                if (q.length < 3) { if(q.length === 0 && this.state.view === 'home') this.renderHome(); return; }
-                if(this.state.view !== 'home') return; 
-                let html = ''; let found = false;
-                CATEGORIES.forEach(cat => {
-                    DATA[cat.id].forEach(scen => {
-                        if(scen.title.toLowerCase().includes(q) || scen.type.toLowerCase().includes(q)) {
-                            found = true;
-                            html += `<button onclick="window.app.openScenario('${scen.id}')" class="animate-fadeIn bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full mb-4 relative z-10"><div class="flex-1"><div class="text-xs font-bold text-blue-500 uppercase mb-1">${cat.title}</div><h3 class="text-xl font-bold text-slate-800">${scen.title}</h3></div><i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i></button>`;
-                        }
-                    });
-                });
-                if(!found) html = '<div class="col-span-2 text-center text-slate-400 py-10">No scenarios found.</div>';
-                grid.innerHTML = html; lucide.createIcons();
-            },
-            getRoleIcon(role) { const r = role.toLowerCase(); if (r.includes('finance')) return 'credit-card'; if (r.includes('user')) return 'user-check'; return 'users'; },
-            renderGlossaryList() { const list = document.getElementById('glossary-list'); if(!list) return; let html = ''; Object.entries(GLOSSARY).forEach(([key, val]) => { html += `<div class="flex flex-col border-b border-slate-100 pb-3 last:border-0 mb-3 last:mb-0"><span class="font-bold text-slate-800 text-sm mb-1">${key.replace('_', ' ')}</span><span class="text-slate-500 text-xs leading-snug">${val}</span></div>`; }); list.innerHTML = html; },
-            renderHome() {
-                const container = document.getElementById('app-container'); container.innerHTML = document.querySelector('#home-template').innerHTML;
-                const grid = document.getElementById('category-grid'); let html = '';
-                CATEGORIES.forEach(cat => {
-                    html += `<button onclick="window.app.goCategory('${cat.id}')" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg border border-slate-200 hover:shadow-2xl hover:border-blue-300 hover:-translate-y-1 transition-all duration-300 text-left w-full h-full relative z-10"><div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${cat.bgGradient}"></div><div class="p-8 flex flex-col h-full"><div class="flex items-start justify-between mb-8"><div class="inline-flex p-4 rounded-2xl ${cat.lightBg} shadow-inner"><i data-lucide="${cat.iconName}" class="w-10 h-10 ${cat.color}"></i></div><div class="bg-slate-50 p-3 rounded-full border border-slate-100"><i data-lucide="arrow-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i></div></div><h2 class="text-3xl font-bold text-slate-900 mb-3 tracking-tight">${cat.title}</h2><p class="text-slate-500 text-base leading-relaxed mb-8 font-medium">${cat.description}</p></div></button>`;
-                });
-                grid.innerHTML = html; lucide.createIcons();
-            },
-            renderCategory() {
-                const catId = this.state.activeCategory; const category = CATEGORIES.find(c => c.id === catId); const scenarios = DATA[catId];
-                const container = document.getElementById('app-container'); container.innerHTML = document.querySelector('#category-template').innerHTML;
-                document.getElementById('crumb-category').textContent = category.title; document.getElementById('cat-header-title').textContent = category.title;
-                let html = '';
-                scenarios.forEach((scen, index) => {
-                    const theme = getScenarioThemeConfig(scen.type);
-                    html += `<button onclick="window.app.openScenario('${scen.id}')" style="animation-delay: ${index * 75}ms" class="animate-slideIn ${theme.bg} p-6 rounded-2xl border-2 ${theme.border} shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full relative overflow-hidden z-10"><div class="absolute left-0 top-0 bottom-0 w-1.5 ${theme.accent} opacity-0 group-hover:opacity-100 transition-opacity"></div><div class="mr-6 ${theme.iconBg} p-4 rounded-xl border border-white/50 group-hover:scale-110 shadow-sm flex-shrink-0"><i data-lucide="file-text" class="w-8 h-8 ${theme.icon} transition-colors"></i></div><div class="flex-1 pr-6 min-w-0"><h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate mb-2">${scen.title}</h3><div class="flex flex-wrap items-center gap-3"><span class="bg-slate-50 px-2.5 py-1 rounded-md text-xs font-bold text-slate-600 border border-slate-100 uppercase tracking-wide">${scen.type}</span><span class="flex items-center text-xs text-slate-500 font-medium"><i data-lucide="list-checks" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.steps.length} Steps</span></div></div></button>`;
-                });
-                document.getElementById('scenario-list').innerHTML = html; lucide.createIcons();
-            },
-            renderScenario() {
-                const scenario = this.state.activeScenario; const category = CATEGORIES.find(c => c.id === this.state.activeCategory);
-                if(!category) return this.goHome();
-                const container = document.getElementById('app-container'); container.innerHTML = document.querySelector('#scenario-template').innerHTML;
-                document.getElementById('header-cat-title').textContent = category.title; document.getElementById('header-scenario-title').textContent = scenario.title;
-                
-                let shHtml = ''; const uniqueRoles = new Set(); 
-                scenario.stakeholders.forEach(sh => { const styles = getRoleStylesConfig(sh); shHtml += `<span class="px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wide border ${styles.badge} shadow-sm">${sh}</span>`; uniqueRoles.add(sh); });
-                scenario.steps.forEach(s => { if(s.owner && !s.type) s.owner.split('/').forEach(part => uniqueRoles.add(part.trim())); });
-                document.getElementById('scenario-stakeholders').innerHTML = shHtml;
-                const filterSelect = document.getElementById('role-filter');
-                Array.from(uniqueRoles).sort().forEach(role => { const opt = document.createElement('option'); opt.value = role; opt.textContent = `Focus on: ${role}`; filterSelect.appendChild(opt); });
+            openScenario(id) {
+                const scenario = SCENARIO_MAP[id];
+                if (!scenario) return console.error('Scenario not found:', id);
 
-                let docsHtml = ''; const docsSet = new Set(); scenario.steps.forEach(s => { if (s.doc) docsSet.add(s.doc); });
-                if (docsSet.size === 0) docsHtml = '<span class="text-sm text-slate-400 italic px-2">No specific documents listed.</span>'; else docsSet.forEach(doc => { docsHtml += `<div class="flex items-start text-xs font-medium text-slate-700 p-2.5 bg-white rounded-lg border border-indigo-50 shadow-sm"><i data-lucide="file" class="w-4 h-4 mr-2.5 mt-0.5 text-indigo-500"></i> <span class="flex-1 leading-snug">${doc}</span></div>`; });
-                document.getElementById('docs-summary').innerHTML = docsHtml;
+                // Auto-detect category for correct breadcrumb/back navigation
+                if (!this.state.activeCategory) {
+                    const catId = Object.keys(DATA).find(key => DATA[key].some(s => s.id === id));
+                    if (catId) this.state.activeCategory = catId;
+                }
 
-                let stepsHtml = ''; let phases = []; let currentBatch = [];
-                scenario.steps.forEach(step => { if (step.type === 'checkpoint') { if (currentBatch.length > 0) { phases.push({ type: 'steps', data: currentBatch }); currentBatch = []; } phases.push({ type: 'checkpoint', data: step }); } else { currentBatch.push(step); } });
-                if (currentBatch.length > 0) phases.push({ type: 'steps', data: currentBatch });
+                this.state.view = 'scenario';
+                this.state.activeScenario = scenario;
+                this.state.currentRoleFilter = 'all';
+                this.state.completedSteps.clear();
+                this.renderScenario();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
 
-                phases.forEach((group, index) => {
-                    if (group.type === 'checkpoint') {
-                        const step = group.data;
-                        stepsHtml += `<div class="step-card bg-gradient-to-br from-red-50 via-white to-red-50/30 border-2 border-red-100 rounded-2xl p-0 shadow-lg overflow-hidden mb-10 transform transition-all hover:scale-[1.01] relative z-10" data-owner="${step.owner}"><div class="bg-red-50/80 p-5 flex items-center border-b border-red-100 backdrop-blur-sm"><div class="bg-white p-2 rounded-xl mr-4 shadow-sm border border-red-100"><i data-lucide="shield-alert" class="w-6 h-6 text-red-600"></i></div><div><h4 class="text-red-900 font-extrabold text-sm uppercase tracking-widest">Mandatory Checkpoint</h4><p class="text-red-700 text-xs font-medium mt-0.5">Gatekeeper: ${step.owner}</p></div></div><div class="p-6"><h4 class="font-bold text-slate-800 text-xl mb-3">${step.title}</h4><p class="text-slate-600 text-sm leading-relaxed font-medium">${step.desc}</p></div></div>`;
-                    } else {
-                        stepsHtml += `<div class="space-y-6 relative pl-8 pb-4 progress-line ml-4">`;
-                        group.data.forEach((step, stepIdx) => {
-                            const styles = getRoleStylesConfig(step.owner); const roleIcon = app.getRoleIcon(step.owner); const uniqueId = `step-${step.step}-${index}`; const delay = stepIdx * 50;
-                            stepsHtml += `<div id="${uniqueId}" onclick="window.app.toggleStep('${uniqueId}')" style="animation-delay: ${delay}ms" class="step-card animate-slideIn relative ${styles.cardBg} border-l-[3px] ${styles.border} rounded-r-2xl shadow-sm border-y border-r border-slate-200 p-6 hover:shadow-lg flex flex-col sm:flex-row gap-6 z-10" data-owner="${step.owner}"><div class="flex-shrink-0"><div class="w-10 h-10 rounded-xl ${styles.bg} step-icon-bg font-bold flex items-center justify-center text-sm ring-4 ring-white shadow-md border border-white transition-colors">${step.step}</div></div><div class="flex-grow min-w-0"><div class="flex flex-wrap justify-between items-start gap-3 mb-4"><h3 class="font-bold text-slate-800 text-lg leading-tight">${step.action}</h3><span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ${styles.badge}"><i data-lucide="${roleIcon}" class="w-3 h-3 mr-1.5"></i> ${step.owner}</span></div><div class="flex flex-wrap gap-3 mb-4"><div class="bg-slate-50/80 px-3 py-1.5 rounded-lg border border-slate-100 flex items-center text-xs font-semibold text-slate-600"><i data-lucide="clock" class="w-3.5 h-3.5 mr-2 text-slate-400"></i> ${step.timing}</div>${step.doc ? `<div class="bg-indigo-50/50 px-3 py-1.5 rounded-lg border border-indigo-50 flex items-center text-xs font-semibold text-indigo-700 truncate max-w-[200px]" title="${step.doc}"><i data-lucide="file-text" class="w-3.5 h-3.5 mr-2 text-indigo-400"></i> <span class="truncate">${step.doc}</span></div>` : ''}</div>${step.details ? `<div class="text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex gap-3"><i data-lucide="info" class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5"></i> <span class="leading-relaxed">${step.details}</span></div>` : ''}</div></div>`;
-                        });
-                        stepsHtml += `</div>`;
-                    }
-                });
-                document.getElementById('steps-container').innerHTML = stepsHtml; lucide.createIcons(); app.updateProgressBar();
-            }
-        };
+            toggleGlossary(show) {
+                const modal = document.querySelector('#glossary-modal');
+                const content = document.querySelector('#glossary-content');
+                if (show) {
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        content.classList.remove('scale-95');
+                        content.classList.add('scale-100');
+                    }, 10);
+                } else {
+                    modal.classList.add('opacity-0');
+                    content.classList.remove('scale-100');
+                    content.classList.add('scale-95');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            },
 
-        window.app = app; window.addEventListener('DOMContentLoaded', () => { app.init(); });
-    </script>
+            toggleStep(stepId) {
+                const card = document.getElementById(stepId);
+                if(!card) return;
+                if(this.state.completedSteps.has(stepId)) {
+                    this.state.completedSteps.delete(stepId);
+                    card.classList.remove('step-completed');
+                } else {
+                    this.state.completedSteps.add(stepId);
+                    card.classList.add('step-completed');
+                }
+                this.updateProgressBar();
+            },
+
+            updateProgressBar() {
+                const total = this.state.activeScenario.steps.length;
+                const done = this.state.completedSteps.size;
+                const pct = Math.round((done / total) * 100);
+                const bar = document.getElementById('progress-bar');
+                const txt = document.getElementById('progress-text');
+                if(bar && txt) {
+                    bar.style.width = `${pct}%`;
+                    txt.textContent = `${pct}% Completed`;
+                }
+            },
+
+            filterByRole(role) {
+                this.state.currentRoleFilter = role;
+                document.querySelectorAll('.step-card').forEach(step => {
+                    const owner = step.getAttribute('data-owner');
+                    const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const match = role === 'all' || owner.split('/').some(s => normalize(s).includes(normalize(role)));
+                    match ? step.classList.remove('step-dimmed') : step.classList.add('step-dimmed');
+                });
+            },
+
+            searchScenarios(query) {
+                const q = query.toLowerCase();
+                const grid = document.getElementById('category-grid');
+                if (q.length < 3) {
+                    if(q.length === 0 && this.state.view === 'home') this.renderHome();
+                    return;
+                }
+                if(this.state.view !== 'home') return; 
+
+                let html = '';
+                let found = false;
+                CATEGORIES.forEach(cat => {
+                    DATA[cat.id].forEach(scen => {
+                        if(scen.title.toLowerCase().includes(q) || scen.type.toLowerCase().includes(q)) {
+                            found = true;
+                            html += `
+                                <button onclick="window.app.openScenario('${scen.id}')" class="animate-fadeIn bg-white p-6 rounded-2xl border-2 border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full mb-4 relative z-10">
+                                    <div class="flex-1">
+                                        <div class="text-xs font-bold text-blue-500 uppercase mb-1">${cat.title}</div>
+                                        <h3 class="text-xl font-bold text-slate-800">${scen.title}</h3>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i>
+                                </button>
+                            `;
+                        }
+                    });
+                });
+                if(!found) html = '<div class="col-span-2 text-center text-slate-400 py-10">No scenarios found.</div>';
+                grid.innerHTML = html;
+                lucide.createIcons();
+            },
+
+            getRoleIcon(role) {
+                const r = role.toLowerCase();
+                if (r.includes('finance') || r.includes('dre')) return 'credit-card';
+                if (r.includes('purchaser') || r.includes('buyer')) return 'user-check';
+                if (r.includes('transfer')) return 'file-signature';
+                if (r.includes('bo')) return 'building-2';
+                if (r.includes('csr')) return 'headset';
+                return 'users';
+            },
+
+            getRoleColorStyles(role) {
+                const r = role.toLowerCase();
+                if (r.includes('finance') || r.includes('dre')) return { bg: 'bg-emerald-100 text-emerald-700', border: 'border-l-emerald-500', badge: 'bg-emerald-50 text-emerald-700 border-emerald-100', cardBg: 'bg-gradient-to-br from-emerald-50/50 to-white' };
+                if (r.includes('transfer')) return { bg: 'bg-violet-100 text-violet-700', border: 'border-l-violet-500', badge: 'bg-violet-50 text-violet-700 border-violet-100', cardBg: 'bg-gradient-to-br from-violet-50/50 to-white' };
+                if (r.includes('purchaser') || r.includes('buyer')) return { bg: 'bg-blue-100 text-blue-700', border: 'border-l-blue-500', badge: 'bg-blue-50 text-blue-700 border-blue-100', cardBg: 'bg-gradient-to-br from-blue-50/50 to-white' };
+                if (r.includes('csr')) return { bg: 'bg-sky-100 text-sky-700', border: 'border-l-sky-500', badge: 'bg-sky-50 text-sky-700 border-sky-100', cardBg: 'bg-gradient-to-br from-sky-50/50 to-white' };
+                if (r.includes('bo')) return { bg: 'bg-indigo-100 text-indigo-700', border: 'border-l-indigo-500', badge: 'bg-indigo-50 text-indigo-700 border-indigo-100', cardBg: 'bg-gradient-to-br from-indigo-50/50 to-white' };
+                return { bg: 'bg-slate-200 text-slate-700', border: 'border-l-slate-400', badge: 'bg-slate-100 text-slate-700 border-slate-200', cardBg: 'bg-gradient-to-br from-slate-50/50 to-white' };
+            },
+
+            getScenarioTheme(type) {
+                if (type.includes('Standard')) return { bg: 'bg-white', border: 'border-sky-100', icon: 'text-sky-600', iconBg: 'bg-sky-50', accent: 'bg-sky-500' };
+                if (type.includes('POA') || type.includes('Rep')) return { bg: 'bg-white', border: 'border-violet-100', icon: 'text-violet-600', iconBg: 'bg-violet-50', accent: 'bg-violet-500' };
+                if (type.includes('Company')) return { bg: 'bg-white', border: 'border-amber-100', icon: 'text-amber-700', iconBg: 'bg-amber-50', accent: 'bg-amber-500' };
+                if (type.includes('Fleet')) return { bg: 'bg-white', border: 'border-emerald-100', icon: 'text-emerald-700', iconBg: 'bg-emerald-50', accent: 'bg-emerald-500' };
+                return { bg: 'bg-white', border: 'border-slate-100', icon: 'text-slate-400', iconBg: 'bg-slate-50', accent: 'bg-slate-300' };
+            },
+
+            renderGlossaryList() {
+                const list = document.getElementById('glossary-list');
+                if(!list) return;
+                let html = '';
+                Object.entries(GLOSSARY).forEach(([key, val]) => {
+                    html += `<div class="flex flex-col border-b border-slate-100 pb-3 last:border-0 mb-3 last:mb-0 group"><span class="font-bold text-slate-800 text-sm mb-1 group-hover:text-blue-600 transition-colors">${key.replace('_', ' ')}</span><span class="text-slate-500 text-xs leading-snug">${val}</span></div>`;
+                });
+                list.innerHTML = html;
+            },
+
+            renderHome() {
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('home-template');
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+                
+                const grid = document.getElementById('category-grid');
+                let html = '';
+                
+                CATEGORIES.forEach(cat => {
+                    html += `
+                        <button onclick="window.app.goCategory('${cat.id}')" class="group relative overflow-hidden rounded-2xl bg-white shadow-lg shadow-slate-200/50 border border-slate-200 hover:shadow-2xl hover:border-blue-300 hover:-translate-y-1 transition-all duration-300 text-left w-full h-full relative z-10">
+                            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${cat.bgGradient}"></div>
+                            <div class="p-8 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-8">
+                                    <div class="inline-flex p-4 rounded-2xl ${cat.lightBg} group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                                        <i data-lucide="${cat.iconName}" class="w-10 h-10 ${cat.color}"></i>
+                                    </div>
+                                    <div class="bg-slate-50 p-3 rounded-full group-hover:bg-blue-50 transition-colors border border-slate-100 group-hover:border-blue-100">
+                                        <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300 group-hover:text-blue-600"></i>
+                                    </div>
+                                </div>
+                                <h2 class="text-3xl font-bold text-slate-900 mb-3 tracking-tight">${cat.title}</h2>
+                                <p class="text-slate-500 text-base leading-relaxed mb-8 font-medium">${cat.description}</p>
+                                <div class="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 group-hover:text-blue-600 transition-colors flex items-center">Browse Scenarios</span>
+                                    <span class="text-slate-300 group-hover:text-blue-400 text-xs font-mono">ID: ${cat.id.toUpperCase()}</span>
+                                </div>
+                            </div>
+                        </button>
+                    `;
+                });
+                
+                grid.innerHTML = html;
+                lucide.createIcons();
+            },
+
+            renderCategory() {
+                const catId = this.state.activeCategory;
+                const category = CATEGORIES.find(c => c.id === catId);
+                const scenarios = DATA[catId];
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('category-template');
+                
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+
+                if(document.getElementById('crumb-category')) document.getElementById('crumb-category').textContent = category.title;
+                if(document.getElementById('cat-header-title')) document.getElementById('cat-header-title').textContent = category.title;
+
+                let html = '';
+                scenarios.forEach((scen, index) => {
+                    const theme = this.getScenarioTheme(scen.type);
+                    let typeIcon = 'user';
+                    if (scen.type.includes('Company') || scen.type.includes('Fleet')) typeIcon = 'building-2';
+                    if (scen.type.includes('POA')) typeIcon = 'file-signature';
+                    
+                    html += `
+                        <button onclick="window.app.openScenario('${scen.id}')" style="animation-delay: ${index * 75}ms" class="animate-slideIn ${theme.bg} p-6 rounded-2xl border-2 ${theme.border} shadow-sm hover:shadow-xl hover:border-blue-400 transition-all text-left flex items-center group w-full relative overflow-hidden z-10">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 ${theme.accent} opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div class="mr-6 ${theme.iconBg} p-4 rounded-xl border border-white/50 group-hover:scale-110 transition-transform shadow-sm flex-shrink-0">
+                                <i data-lucide="${typeIcon}" class="w-8 h-8 ${theme.icon} transition-colors"></i>
+                            </div>
+                            <div class="flex-1 pr-6 min-w-0">
+                                <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate mb-2">${scen.title}</h3>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <span class="bg-slate-50 px-2.5 py-1 rounded-md text-xs font-bold text-slate-600 border border-slate-100 uppercase tracking-wide">${scen.type}</span>
+                                    <span class="flex items-center text-xs text-slate-500 font-medium"><i data-lucide="list-checks" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.steps.length} Steps</span>
+                                    <span class="flex items-center text-xs text-slate-500 font-medium"><i data-lucide="users" class="w-3.5 h-3.5 mr-1.5"></i> ${scen.stakeholders.length} Roles</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-full border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors">
+                                <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-blue-600"></i>
+                            </div>
+                        </button>
+                    `;
+                });
+                const list = document.getElementById('scenario-list');
+                if(list) list.innerHTML = html;
+                lucide.createIcons();
+            },
+
+            renderScenario() {
+                const scenario = this.state.activeScenario;
+                const category = CATEGORIES.find(c => c.id === this.state.activeCategory);
+                if(!category) return this.goHome();
+
+                const container = document.getElementById('app-container');
+                const template = document.getElementById('scenario-template');
+                container.innerHTML = template.innerHTML; // USING INNERHTML DIRECTLY
+
+                // Safely hydrate static elements
+                if(document.getElementById('crumb-cat-link')) document.getElementById('crumb-cat-link').textContent = category.title;
+                if(document.getElementById('crumb-scenario')) document.getElementById('crumb-scenario').textContent = scenario.title;
+                if(document.getElementById('header-cat-title')) document.getElementById('header-cat-title').textContent = category.title;
+                if(document.getElementById('header-scenario-title')) document.getElementById('header-scenario-title').textContent = scenario.title;
+
+                // 1. Stakeholders
+                let shHtml = '';
+                const uniqueRoles = new Set(); 
+                scenario.stakeholders.forEach(sh => {
+                    const styles = this.getRoleColorStyles(sh);
+                    shHtml += `<span class="px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wide border ${styles.badge} shadow-sm">${sh}</span>`;
+                    uniqueRoles.add(sh);
+                });
+                scenario.steps.forEach(s => { if(s.owner && !s.type) s.owner.split('/').forEach(part => uniqueRoles.add(part.trim())); });
+                if(document.getElementById('scenario-stakeholders')) document.getElementById('scenario-stakeholders').innerHTML = shHtml;
+
+                const filterSelect = document.getElementById('role-filter');
+                if(filterSelect) {
+                    Array.from(uniqueRoles).sort().forEach(role => {
+                        const opt = document.createElement('option');
+                        opt.value = role;
+                        opt.textContent = `Focus on: ${role}`;
+                        filterSelect.appendChild(opt);
+                    });
+                }
+
+                // 2. Docs
+                let docsHtml = '';
+                const docsSet = new Set();
+                scenario.steps.forEach(s => { if (s.doc) docsSet.add(s.doc); });
+                if (docsSet.size === 0) {
+                    docsHtml = '<span class="text-sm text-slate-400 italic px-2">No specific documents listed.</span>';
+                } else {
+                    docsSet.forEach(doc => {
+                        docsHtml += `<div class="flex items-start text-xs font-medium text-slate-700 p-2.5 bg-white rounded-lg border border-indigo-50 shadow-sm hover:shadow-md transition-shadow"><i data-lucide="file" class="w-4 h-4 mr-2.5 mt-0.5 text-indigo-500"></i> <span class="flex-1 leading-snug">${doc}</span></div>`;
+                    });
+                }
+                if(document.getElementById('docs-summary')) document.getElementById('docs-summary').innerHTML = docsHtml;
+
+                // 3. Steps
+                let stepsHtml = '';
+                let phases = [];
+                let currentBatch = [];
+                scenario.steps.forEach(step => {
+                    if (step.type === 'checkpoint') {
+                        if (currentBatch.length > 0) { phases.push({ type: 'steps', data: currentBatch }); currentBatch = []; }
+                        phases.push({ type: 'checkpoint', data: step });
+                    } else { currentBatch.push(step); }
+                });
+                if (currentBatch.length > 0) phases.push({ type: 'steps', data: currentBatch });
+
+                phases.forEach((group, index) => {
+                    if (group.type === 'checkpoint') {
+                        const step = group.data;
+                        stepsHtml += `
+                            <div class="step-card bg-gradient-to-br from-red-50 via-white to-red-50/30 border-2 border-red-100 rounded-2xl p-0 shadow-lg shadow-red-100/40 overflow-hidden mb-10 transform transition-all hover:scale-[1.01] relative z-10" data-owner="${step.owner}">
+                                <div class="bg-red-50/80 p-5 flex items-center border-b border-red-100 backdrop-blur-sm">
+                                    <div class="bg-white p-2 rounded-xl mr-4 shadow-sm border border-red-100"><i data-lucide="shield-alert" class="w-6 h-6 text-red-600"></i></div>
+                                    <div><h4 class="text-red-900 font-extrabold text-sm uppercase tracking-widest">Mandatory Checkpoint</h4><p class="text-red-700 text-xs font-medium mt-0.5">Gatekeeper: ${step.owner}</p></div>
+                                </div>
+                                <div class="p-6"><h4 class="font-bold text-slate-800 text-xl mb-3">${step.title}</h4><p class="text-slate-600 text-sm leading-relaxed font-medium">${step.desc}</p></div>
+                            </div>
+                        `;
+                    } else {
+                        stepsHtml += `<div class="space-y-6 relative pl-8 pb-4 progress-line ml-4">`;
+                        group.data.forEach((step, stepIdx) => {
+                            const styles = this.getRoleColorStyles(step.owner);
+                            const roleIcon = this.getRoleIcon(step.owner);
+                            const uniqueId = `step-${step.step}-${index}`;
+                            const delay = stepIdx * 50;
+                            
+                            stepsHtml += `
+                                <div id="${uniqueId}" onclick="window.app.toggleStep('${uniqueId}')" style="animation-delay: ${delay}ms" class="step-card animate-slideIn relative ${styles.cardBg} border-l-[3px] ${styles.border} rounded-r-2xl shadow-sm border-y border-r border-slate-200 p-6 hover:shadow-lg flex flex-col sm:flex-row gap-6 z-10" data-owner="${step.owner}">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-xl ${styles.bg} step-icon-bg font-bold flex items-center justify-center text-sm ring-4 ring-white shadow-md border border-white transition-colors">${step.step}</div>
+                                    </div>
+                                    <div class="flex-grow min-w-0">
+                                        <div class="flex flex-wrap justify-between items-start gap-3 mb-4">
+                                            <h3 class="font-bold text-slate-800 text-lg leading-tight">${step.action}</h3>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ${styles.badge}"><i data-lucide="${roleIcon}" class="w-3 h-3 mr-1.5"></i> ${step.owner}</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-3 mb-4">
+                                            <div class="bg-slate-50/80 px-3 py-1.5 rounded-lg border border-slate-100 flex items-center text-xs font-semibold text-slate-600"><i data-lucide="clock" class="w-3.5 h-3.5 mr-2 text-slate-400"></i> ${step.timing}</div>
+                                            ${step.doc ? `<div class="bg-indigo-50/50 px-3 py-1.5 rounded-lg border border-indigo-50 flex items-center text-xs font-semibold text-indigo-700 truncate max-w-[200px]" title="${step.doc}"><i data-lucide="file-text" class="w-3.5 h-3.5 mr-2 text-indigo-400"></i> <span class="truncate">${step.doc}</span></div>` : ''}
+                                        </div>
+                                        ${step.details ? `<div class="text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex gap-3"><i data-lucide="info" class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5"></i> <span class="leading-relaxed">${step.details}</span></div>` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        stepsHtml += `</div>`;
+                    }
+                });
+                if(document.getElementById('steps-container')) document.getElementById('steps-container').innerHTML = stepsHtml;
+                lucide.createIcons();
+                this.updateProgressBar();
+            }
+        };
+
+        // Expose app to window strictly for onclick handlers
+        window.app = app;
+        window.addEventListener('DOMContentLoaded', () => { app.init(); });
+    </script>
 </body>
 </html>
